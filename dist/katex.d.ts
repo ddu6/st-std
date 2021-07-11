@@ -1,0 +1,15 @@
+import { UnitCompiler } from '@ddu6/stc';
+export declare const katex: UnitCompiler;
+export declare const aligned: UnitCompiler;
+export declare const alignedat: UnitCompiler;
+export declare const array: UnitCompiler;
+export declare const arraystretch: UnitCompiler;
+export declare const Bmatrix: UnitCompiler;
+export declare const bmatrix: UnitCompiler;
+export declare const cases: UnitCompiler;
+export declare const matrix: UnitCompiler;
+export declare const rcases: UnitCompiler;
+export declare const pmatrix: UnitCompiler;
+export declare const smallmatrix: UnitCompiler;
+export declare const Vmatrix: UnitCompiler;
+export declare const vmatrix: UnitCompiler;

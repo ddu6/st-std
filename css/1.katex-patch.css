@@ -1,0 +1,14 @@
+body {
+    --font-katex: st-sans, KaTeX_Main, "Segoe UI", "Microsoft YaHei", "Hiragino Sans GB", "STHeiti Light", sans-serif, "Apple Color Emoji", "Segoe UI Emoji", "Segoe UI Symbol";
+}
+
+.katex {
+    font-family: var(--font-katex);
+    font-size: 1em;
+    line-height: var(--number-ratio-line);
+    white-space: pre;
+}
+
+.katex-display {
+    margin: 0;
+}
