@@ -15,8 +15,7 @@ window.shell=shell
     ]}
     {label th1,mark A,desc DDU,theorem[STDN is easy to use.]}
     {proof[We leave it to the reader.]}
-    {label co1,corollary[{label eq3,mark{'\\square'},class plain,equation[STDN is a good language.]}]}
-    {css main.css,global[]}`,'',{dftCSS:css,dftTagToUnitCompiler:tagToUnitCompiler})
+    {label co1,corollary[{label eq3,mark{'\\square'},class plain,equation[STDN is a good language.]}]}`,'',{dftCSS:css,dftTagToUnitCompiler:tagToUnitCompiler})
     if(result===undefined){
         return
     }

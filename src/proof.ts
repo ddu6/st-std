@@ -30,7 +30,7 @@ export const proof:UnitCompiler=async (unit,compiler)=>{
     }else if(typeof desc==='number'){
         descEle.setText(desc.toString())
     }
-    const qed=await compiler.compileUnit({tag:'katex',options:{},children:['\\square'.split('')]})
+    const qed=await compiler.compileUnit({tag:'katex',options:{class:'qed'},children:['\\square'.split('')]})
     if(content.children.length===0){
         content.append(
             new Div().append(qed)
