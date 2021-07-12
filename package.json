@@ -29,7 +29,7 @@
     "webpack-cli": "^4.7.2"
   },
   "dependencies": {
-    "@ddu6/stc": "^0.0.14",
+    "@ddu6/stc": "^0.0.15",
     "highlight.js": "^11.1.0",
     "katex": "^0.13.11",
     "prismjs": "^1.24.1",
