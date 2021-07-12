@@ -3,7 +3,7 @@
 import {css,tagToUnitCompiler} from 'st-std'
 import {compile} from '@ddu6/stc'
 import {Shell} from '@ddu6/stui'
-const shell=new Shell()
+const shell=new Shell('','',css)
 window.shell=shell
 ;(async()=>{
     const result=await compile(`{'a_1=1'}
@@ -18,7 +18,6 @@ window.shell=shell
     {label th1,mark A,desc DDU,theorem[STDN is easy to use.]}
     {proof[We leave it to the reader.]}
     {label co1,corollary[{label eq3,orbit alone,mark{'\\square'},class plain,equation[STDN is a good language.]}]}`,'',{
-        dftCSS:css,
         dftTagToUnitCompiler:tagToUnitCompiler
     })
     if(result===undefined){
