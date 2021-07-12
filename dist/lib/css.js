@@ -1286,6 +1286,10 @@ export const unit = `/* caption */
     display: none;
 }
 
+div>.caption:first-child>.tag {
+    text-transform: capitalize;
+}
+
 .caption>.desc:not(:empty)::before {
     content: "(";
     margin-left: var(--length-space);
@@ -1302,7 +1306,6 @@ export const unit = `/* caption */
 
 .caption+.content:not(:empty)::before {
     content: "";
-    display: inline-block;
     margin-left: var(--length-gap);
 }
 
@@ -1361,12 +1364,17 @@ export const unit = `/* caption */
 }
 
 /* figure */
-.figcaption>.tag {
+.unit.figure>.caption {
+    display: block;
+    margin: var(--length-space) 0;
+}
+
+.unit.figure>.caption>.tag {
     text-transform: capitalize;
     font-weight: bold;
 }
 
-.figcaption>.mark {
+.unit.figure>.caption>.mark {
     font-weight: bold;
 }
 
@@ -1391,7 +1399,6 @@ export const unit = `/* caption */
 }
 
 .unit.proof>.caption>.tag {
-    text-transform: capitalize;
     font-weight: bold;
     font-style: italic;
 }
@@ -1413,19 +1420,6 @@ export const unit = `/* caption */
     break-inside: avoid;
 }
 
-.unit.theorem>.caption>.tag {
-    text-transform: capitalize;
-    font-weight: bold;
-}
-
-.unit.theorem>.caption>.mark {
-    font-weight: bold;
-}
-
-.unit.theorem:not(.definition):not(.remark)>.content {
-    font-style: italic;
-}
-
 .unit.definition {
     border-left-color: var(--color-string);
 }
@@ -1434,8 +1428,17 @@ export const unit = `/* caption */
     border-left-color: var(--color-comment);
 }
 
+.unit.theorem>.caption>.tag,
+.unit.theorem>.caption>.mark {
+    font-weight: bold;
+}
+
 .unit.remark>.caption>.tag,
 .unit.remark>.caption>.mark {
+    font-style: italic;
+}
+
+.unit.theorem:not(.definition):not(.remark)>.content {
     font-style: italic;
 }
 

@@ -1,16 +1,16 @@
 import { Div, Span } from 'stce';
 export const proof = async (unit, compiler) => {
-    const element = new Div();
-    const caption = new Span(['caption']);
     const tagEle = new Span(['tag']).setText('proof');
     const markEle = new Span(['mark']);
     const descEle = new Span(['desc']);
-    const content = new Span(['content']);
-    element
-        .append(caption
+    const caption = new Span(['caption'])
         .append(tagEle)
         .append(markEle)
-        .append(descEle))
+        .append(descEle);
+    const content = new Span(['content'])
+        .append(await compiler.compileSTDN(unit.children));
+    const element = new Div()
+        .append(caption)
         .append(content);
     const { mark, desc } = unit.options;
     if (Array.isArray(mark)) {

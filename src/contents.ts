@@ -1,5 +1,5 @@
 import { UnitCompiler } from '@ddu6/stc'
-import { Div, Span } from 'stce'
+import { Div } from 'stce'
 import {ref} from './ref'
 export const contents:UnitCompiler=async(unit,compiler)=>{
     const element=new Div()
@@ -8,18 +8,16 @@ export const contents:UnitCompiler=async(unit,compiler)=>{
         if(indexInfo.unit.tag!=='heading'){
             continue
         }
-        const caption=await ref(indexInfo.unit,compiler)
-        if(caption.classList.contains('warn')){
-            return caption
+        const item=await ref({
+            tag:'heading',
+            options:Object.assign({block:true},indexInfo.unit.options),
+            children:indexInfo.unit.children
+        },compiler)
+        if(item.classList.contains('warn')){
+            return item
         }
-        element.append(
-            new Div(['item','unit','heading','level'+indexInfo.index.length])
-            .append(caption)
-            .append(
-                new Span(['content'])
-                .append(await compiler.compileSTDN(indexInfo.unit.children))
-            )
-        )
+        item.classList.add('item','unit','heading','level'+indexInfo.index.length)
+        element.append(item)
     }
     return element.element
 }

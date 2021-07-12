@@ -10,8 +10,23 @@ export const index:UnitCompiler=async (unit,compiler)=>{
     if(indexInfo===undefined){
         return Compiler.createErrorElement('Error')
     }
-    const element=new Span(['caption'])
-    const tagEle=new Span(['tag']).setText(unit.tag.replace(/^heading$/,'section').replace(/^equation$/,'eq'))
+    let element:Span|Div
+    let df:DocumentFragment
+    const block=unit.options.block===true
+    const reverse=unit.options.reverse===true
+    if(block){
+        element=new Div()
+        df=await compiler.compileSTDN(unit.children)
+    }else{
+        element=new Span()
+        df=await compiler.compileInlineSTDN(unit.children)
+    }
+    const tagEle=new Span(['tag']).setText(
+        unit.tag
+        .replace(/^index$/,indexInfo.orbit)
+        .replace(/^heading$/,'section')
+        .replace(/^equation$/,'eq')
+    )
     const markEle=new CommonEle('a',['mark'])
     try{
         markEle.element.id=label
@@ -19,10 +34,20 @@ export const index:UnitCompiler=async (unit,compiler)=>{
         console.log(err)
     }
     const descEle=new Span(['desc'])
-    element
+    const caption=new Span(['caption'])
     .append(tagEle)
     .append(markEle)
     .append(descEle)
+    const content=new Span(['content']).append(df)
+    if(reverse){
+        element
+        .append(content)
+        .append(caption)
+    }else{
+        element
+        .append(caption)
+        .append(content)
+    }
     const {mark,desc}=unit.options
     if(Array.isArray(mark)){
         markEle.setHTML(removeAnchors(await compiler.compileInlineSTDN(mark)))
@@ -43,17 +68,18 @@ export const index:UnitCompiler=async (unit,compiler)=>{
     return element.element
 }
 export const heading:UnitCompiler=async (unit,compiler)=>{
-    const caption=await index(unit,compiler)
-    if(caption.classList.contains('warn')){
-        return caption
-    }
-    return new Div()
-    .append(caption)
-    .append(
-        new Span(['content'])
-        .append(await compiler.compileSTDN(unit.children))
-    )
-    .element
+    return await index({
+        tag:unit.tag,
+        options:Object.assign({block:true},unit.options),
+        children:unit.children
+    },compiler)
+}
+export const equation:UnitCompiler=async (unit,compiler)=>{
+    return await heading({
+        tag:unit.tag,
+        options:Object.assign({reverse:true},unit.options),
+        children:unit.children
+    },compiler)
 }
 export const theorem:UnitCompiler=async (unit,compiler)=>{
     const element=await heading(unit,compiler)
@@ -79,33 +105,7 @@ export const remark:UnitCompiler=async (unit,compiler)=>{
     element.classList.add('remark')
     return element
 }
-export const equation:UnitCompiler=async (unit,compiler)=>{
-    const caption=await index(unit,compiler)
-    if(caption.classList.contains('warn')){
-        return caption
-    }
-    return new Div()
-    .append(
-        new Div(['content'])
-        .append(await compiler.compileSTDN(unit.children))
-    )
-    .append(caption)
-    .element
-}
-export const figure:UnitCompiler=async (unit,compiler)=>{
-    const caption=await index(unit,compiler)
-    if(caption.classList.contains('warn')){
-        return caption
-    }
-    caption.classList.add('figcaption')
-    return new Div()
-    .append(
-        new Div(['content'])
-        .append(await compiler.compileSTDN(unit.children))
-    )
-    .append(caption)
-    .element
-}
+export const figure=equation
 export const conjecture=theorem
 export const corollary=theorem
 export const lemma=theorem

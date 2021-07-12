@@ -1,5 +1,5 @@
 import { Compiler, UnitCompiler } from '@ddu6/stc'
-import {Anchor, Span} from 'stce'
+import {Anchor, Div, Span} from 'stce'
 import {removeAnchors} from './common'
 export const ref:UnitCompiler=async (unit,compiler)=>{
     const {label}=unit.options
@@ -10,14 +10,39 @@ export const ref:UnitCompiler=async (unit,compiler)=>{
     if(indexInfo===undefined){
         return Compiler.createErrorElement('?')
     }
-    const element=new Span(['caption'])
-    const tagEle=new Span(['tag']).setText(indexInfo.unit.tag.replace(/^heading$/,'section').replace(/^equation$/,'eq'))
+    let element:Span|Div
+    let df:DocumentFragment
+    const block=unit.options.block===true
+    const reverse=unit.options.reverse===true
+    if(block){
+        element=new Div()
+        df=await compiler.compileSTDN(unit.children)
+    }else{
+        element=new Span()
+        df=await compiler.compileInlineSTDN(unit.children)
+    }
+    const tagEle=new Span(['tag']).setText(
+        indexInfo.unit.tag
+        .replace(/^index$/,indexInfo.orbit)
+        .replace(/^heading$/,'section')
+        .replace(/^equation$/,'eq')
+    )
     const markEle=new Anchor('#'+label,['mark'],'')
     const descEle=new Span(['desc'])
-    element
+    const caption=new Span(['caption'])
     .append(tagEle)
     .append(markEle)
     .append(descEle)
+    const content=new Span(['content']).append(df)
+    if(reverse){
+        element
+        .append(content)
+        .append(caption)
+    }else{
+        element
+        .append(caption)
+        .append(content)
+    }
     const {mark,desc}=unit.options
     if(Array.isArray(mark)){
         markEle.setHTML(removeAnchors(await compiler.compileInlineSTDN(mark)))
