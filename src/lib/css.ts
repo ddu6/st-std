@@ -1353,6 +1353,9 @@ div>.caption:first-child>.tag {
 .unit.equation>.content {
     text-align: center;
     grid-area: 1/2/span 1/span 1;
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
 }
 
 .unit.equation>.caption {

@@ -1,5 +1,5 @@
-export async function katex(unit){
+export async function hi(unit){
     const ele=document.createElement('span')
-    ele.textContent=unit.tag
+    ele.textContent='Hi '+unit.options.name+'!'
     return ele
 }
