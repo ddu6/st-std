@@ -27,7 +27,10 @@ export const katex:UnitCompiler=async (unit,compiler)=>{
         customCommand=stdnToPlainString(customCommand)
     }
     if(typeof customCommand==='string'){
-        string=customCommand+'\n '+string
+        if(string.trimStart().startsWith("'")){
+            customCommand+='\\\\'
+        }
+        string=customCommand+'\n'+string
     }
     const displayMode=unit.options.display===true
     element.innerHTML=renderToString(string,{
