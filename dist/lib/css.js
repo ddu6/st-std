@@ -1388,11 +1388,11 @@ div>.caption:first-child>.tag {
     break-inside: avoid;
 }
 
-.unit.heading>.caption>.tag {
+.heading>.caption>.tag {
     display: none;
 }
 
-.unit.heading>.caption>.desc {
+.heading>.caption>.desc {
     display: none;
 }
 

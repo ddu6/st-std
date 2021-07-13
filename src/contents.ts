@@ -16,7 +16,7 @@ export const contents:UnitCompiler=async(unit,compiler)=>{
         if(item.classList.contains('warn')){
             return item
         }
-        item.classList.add('item','unit','heading','level'+indexInfo.index.length)
+        item.classList.add('item','heading','level'+indexInfo.index.length)
         element.append(item)
     }
     return element.element
