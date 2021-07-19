@@ -35,6 +35,23 @@ div>.caption:first-child>.tag {
     display: inline;
 }
 
+/* code */
+code>.line {
+    white-space: pre;
+}
+
+code>.line>.content {
+    display: inline-block;
+    white-space: pre-wrap;
+}
+
+code>.line>.content>*::after {
+    content: " ";
+    display: inline-block;
+    width: 0;
+    height: 0;
+}
+
 /* contents */
 .unit.contents::before {
     content: "Contents";
@@ -89,6 +106,11 @@ div>.caption:first-child>.tag {
 }
 
 /* figure */
+.unit.figure {
+    text-align: center;
+    margin: var(--length-space) 0;
+}
+
 .unit.figure>.caption {
     display: block;
     margin: var(--length-space) 0;
