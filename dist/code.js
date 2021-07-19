@@ -63,26 +63,25 @@ function highlight(code, lang) {
     return addWordBreak(html);
 }
 export const code = async (unit, compiler) => {
-    const element = document.createElement('code');
     let { lang } = unit.options;
     if (typeof lang !== 'string' || lang === '') {
         lang = 'auto';
+    }
+    let element;
+    const html = highlight(stdnToPlainString(unit.children), lang);
+    if (html.includes('\n')) {
+        element = document.createElement('pre');
+        element.innerHTML = html.split('\n').map(val => val.replace(/(^[ ]*)/, '<div class="line"><span>$1</span><div class="content">') + '</div></div>').join('');
+    }
+    else {
+        element = document.createElement('code');
+        element.innerHTML = html;
     }
     try {
         element.classList.add('lang-' + lang);
     }
     catch (err) {
         console.log(err);
-    }
-    const html = highlight(stdnToPlainString(unit.children), lang);
-    if (html.indexOf('\n') === -1) {
-        element.classList.add('line');
-        element.innerHTML = html;
-    }
-    else {
-        element.classList.add('block');
-        element.classList.add('pre');
-        element.innerHTML = html.split('\n').map(val => val.replace(/(^[ ]*)/, '<div class="line"><span>$1</span><div class="content">') + '</div></div>').join('');
     }
     return element;
 };

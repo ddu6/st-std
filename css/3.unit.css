@@ -36,16 +36,16 @@ div>.caption:first-child>.tag {
 }
 
 /* code */
-code>.line {
+.unit.code>.line {
     white-space: pre;
 }
 
-code>.line>.content {
+.unit.code>.line>.content {
     display: inline-block;
     white-space: pre-wrap;
 }
 
-code>.line>.content>*::after {
+.unit.code>.line>.content>*::after {
     content: " ";
     display: inline-block;
     width: 0;
