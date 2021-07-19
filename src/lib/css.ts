@@ -1316,6 +1316,7 @@ div>.caption:first-child>.tag {
 /* code */
 .unit.code>.line {
     white-space: pre;
+    font-size: var(--length-font-span);
 }
 
 .unit.code>.line>.content {
