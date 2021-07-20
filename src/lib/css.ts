@@ -1090,7 +1090,7 @@ body {
 }
 
 `
-export const katex_patch=`body {
+export const katex_patch=`html {
     --font-katex: st-sans, KaTeX_Main, "Segoe UI", "Microsoft YaHei", "Hiragino Sans GB", "STHeiti Light", sans-serif, "Apple Color Emoji", "Segoe UI Emoji", "Segoe UI Symbol";
 }
 
