@@ -18,7 +18,7 @@
   },
   "homepage": "https://github.com/st-org/st-std#readme",
   "devDependencies": {
-    "@ddu6/stui": "^0.0.17",
+    "@ddu6/stui": "^0.0.18",
     "@types/katex": "^0.11.1",
     "@types/node": "^16.3.3",
     "@types/prismjs": "^1.16.6",
@@ -28,7 +28,7 @@
     "webpack-cli": "^4.7.2"
   },
   "dependencies": {
-    "@ddu6/stc": "^0.0.26",
+    "@ddu6/stc": "^0.0.29",
     "highlight.js": "^11.1.0",
     "katex": "^0.13.11",
     "prismjs": "^1.24.1",

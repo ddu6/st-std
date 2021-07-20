@@ -1276,6 +1276,13 @@ export const hl = `.hljs,
 .token.italic {
     font-style: italic;
 }`;
+export const line = `.st-line {
+    white-space: pre-wrap;
+}
+
+.st-line:not(.vanished):empty::before {
+    content: " ";
+}`;
 export const unit = `/* caption */
 .caption>.tag:not(:empty) {
     margin-right: var(--length-space);
@@ -1480,4 +1487,4 @@ div>.caption:first-child>.tag {
     color: var(--color-warn);
     text-align: center;
 }`;
-export const all = katex + katex_patch + hl + unit;
+export const all = katex + katex_patch + hl + line + unit;
