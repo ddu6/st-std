@@ -65,7 +65,7 @@ function highlight(code, lang) {
 export const code = async (unit, compiler) => {
     let { lang } = unit.options;
     if (typeof lang !== 'string' || lang === '') {
-        lang = 'auto';
+        lang = 'non';
     }
     let element;
     const html = highlight(stdnToPlainString(unit.children), lang);

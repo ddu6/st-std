@@ -62,7 +62,7 @@ function highlight(code:string,lang:string){
 export const code:UnitCompiler=async (unit,compiler)=>{
     let {lang}=unit.options
     if(typeof lang!=='string'||lang===''){
-        lang='auto'
+        lang='non'
     }
     let element:HTMLElement
     const html=highlight(stdnToPlainString(unit.children),lang)
