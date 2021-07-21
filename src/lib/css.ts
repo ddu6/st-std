@@ -1372,7 +1372,6 @@ div>.caption:first-child>.tag {
     margin: var(--length-space) 0;
     display: grid;
     grid-template-columns: 1fr auto 1fr;
-    break-inside: avoid;
 }
 
 .unit.equation>.content {
@@ -1415,7 +1414,6 @@ div>.caption:first-child>.tag {
 .unit.heading {
     font-size: var(--length-font-heading);
     margin: var(--length-gap) 0;
-    break-inside: avoid;
 }
 
 .heading>.caption>.tag {
@@ -1450,7 +1448,6 @@ div>.caption:first-child>.tag {
     display: table;
     box-sizing: border-box;
     width: 100%;
-    break-inside: avoid;
 }
 
 .unit.definition {
