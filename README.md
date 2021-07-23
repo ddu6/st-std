@@ -4,7 +4,6 @@ import {css,tagToUnitCompiler} from 'st-std'
 import {compile} from '@ddu6/stc'
 import {Shell} from '@ddu6/stui'
 const shell=new Shell('','',css)
-window.shell=shell
 ;(async()=>{
     const result=await compile(`{'a_1=1'}
     {display,'a_2=2'}

@@ -22,8 +22,8 @@ export const katex = async (unit, compiler) => {
     if (unit.tag !== 'katex') {
         string = `\\begin{${unit.tag}}${string}\\end{${unit.tag}}`;
     }
-    const customCommandSTDN = (compiler.context.tagToGlobalOptions.katex ?? {}).__;
-    if (customCommandSTDN !== undefined) {
+    const customCommandSTDN = ((compiler.context.tagToGlobalOptions.katex ?? {}).__ ?? []).flat();
+    if (customCommandSTDN.length > 0) {
         let customCommand = stdnToPlainString(customCommandSTDN);
         if (string.trimStart().startsWith("'")) {
             customCommand += '\\\\';

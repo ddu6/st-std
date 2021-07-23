@@ -1,2 +1,4 @@
 export * as tagToUnitCompiler from './ucs'
-export {all as css} from './lib/css'
+import {css as hlCSS} from 'sthl'
+import {all} from './lib/css'
+export const css=hlCSS+all
