@@ -7,7 +7,7 @@ export const code:UnitCompiler=async (unit,compiler)=>{
         lang='non'
     }
     if(lang==='non'){
-        return Highlighter.textToPlainCode(stdnToPlainString(unit.children))
+        return Highlighter.textToPlainCode(stdnToPlainString(unit.children),unit.options.block===true)
     }
     const infoArray=await extractLangInfoArrayFromVSECURLs(
         [
@@ -21,11 +21,13 @@ export const code:UnitCompiler=async (unit,compiler)=>{
     )
     infoArray.push(...await extractLangInfoArrayFromVSECURLs(
         [
-            'https://cdn.jsdelivr.net/gh/st-org/st-lang',
-            'https://cdn.jsdelivr.net/gh/microsoft/vscode-typescript-next',
+            'st-org/st-lang',
+            'microsoft/vscode-typescript-next',
         ]
-        .concat(await getURLsFormKey('vsec-src',compiler.context))
+        .concat(getNonEmptyStrsFormKey('vsec-gh',compiler.context)),
+        'https://cdn.jsdelivr.net/gh/'
     ))
+    infoArray.push(...await extractLangInfoArrayFromVSECURLs(await getURLsFormKey('vsec-src',compiler.context)))
     infoArray.push(...await extractLangInfoArrayFromLangsURLs(await getURLsFormKey('langs-src',compiler.context)))
     infoArray.push({
         name:'markdown',
@@ -41,7 +43,7 @@ export const code:UnitCompiler=async (unit,compiler)=>{
     theme.push(...await extractThemeFromVSTURLs(await getURLsFormKey('vst-src',compiler.context)))
     theme.push(...await extractThemeFromThemeURLs(await getURLsFormKey('theme-src',compiler.context)))
     const highlighter=new Highlighter(infoArray,theme)
-    return await highlighter.highlight(stdnToPlainString(unit.children),lang)
+    return await highlighter.highlight(stdnToPlainString(unit.children),lang,unit.options.block===true)
 }
 function getNonEmptyStrsFormKey(key:string,context:Context){
     const strs:string[]=[]
