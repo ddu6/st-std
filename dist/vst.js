@@ -499,7 +499,7 @@ export const vst = {
                 "support.other.parenthesis.regexp"
             ],
             "settings": {
-                "foreground": "var(--color-string)"
+                "foreground": "var(--color-function)"
             }
         },
         {

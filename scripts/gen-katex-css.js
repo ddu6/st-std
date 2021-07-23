@@ -2,10 +2,7 @@ const fs=require('fs')
 const path=require('path')
 fs.writeFileSync(path.join(__dirname,'../css/0.katex.css'),fixURLInCSS(fs.readFileSync(path.join(__dirname,'../node_modules/katex/dist/katex.css'),{encoding:'utf8'}),'https://cdn.jsdelivr.net/npm/katex/dist/'))
 function isRelURL(url) {
-    return (!url.startsWith('data:')
-        && !url.startsWith('#')
-        && !url.startsWith('https://')
-        && !url.startsWith('http://'));
+    return !/^[a-z][a-z0-9+.-]*:/i.test(url);
 }
 function relURLToAbsURL(url, dir) {
     try {
