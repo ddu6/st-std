@@ -30,17 +30,28 @@
 {label code,level 2,heading[Code]}
 ['In '{lang non,code[3.unit.css]}', we set']
 {lang markdown,code[
-    '```css'
+    ```css
     '.unit.warn {'
     '    color: var(--color-warn);'
     '}'
-    '```'
+    ```
 ]}
 {lang md,code[
-    '# stdn can also be highlighted'
-    '```stdn'
+    # stdn can also be highlighted
+    ```stdn
     '{label code,level 2,heading[Code]}'
-    '```'
+    ```
+    []
+    # ts@next
+    ```ts
+    'class Text{'
+    '    constructor(array?:string[]){'
+    '        for(const item of array??[]){'
+    '            console.log(item)'
+    '        }'
+    '    }'
+    '}'
+    ```
 ]}
 []
 {label list,level 2,heading[List]}

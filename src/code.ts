@@ -13,17 +13,16 @@ export const code:UnitCompiler=async (unit,compiler)=>{
         [
             'css',
             'html',
-            'javascript',
             'json',
             'markdown-basics',
-            'typescript-basics',
         ]
         .concat(getNonEmptyStrsFormKey('vsec',compiler.context)),
         'https://cdn.jsdelivr.net/gh/microsoft/vscode/extensions/'
     )
     infoArray.push(...await extractLangInfoArrayFromVSECURLs(
         [
-            'https://cdn.jsdelivr.net/gh/st-org/st-lang'
+            'https://cdn.jsdelivr.net/gh/st-org/st-lang',
+            'https://cdn.jsdelivr.net/gh/microsoft/vscode-typescript-next',
         ]
         .concat(await getURLsFormKey('vsec-src',compiler.context))
     ))
