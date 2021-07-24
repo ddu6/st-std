@@ -18,7 +18,7 @@
   },
   "homepage": "https://github.com/st-org/st-std#readme",
   "devDependencies": {
-    "@ddu6/stui": "^0.0.24",
+    "@ddu6/stui": "^0.0.25",
     "@types/katex": "^0.11.1",
     "@types/node": "^16.4.1",
     "ts-loader": "^9.2.4",
