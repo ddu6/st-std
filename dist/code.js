@@ -1,6 +1,6 @@
 import { stdnToPlainString, urlsToAbsURLs } from '@ddu6/stc';
-import { extractLangInfoArrayFromLangsURLs, extractLangInfoArrayFromVSECURLs, extractThemeFromThemeURLs, extractThemeFromVST, extractThemeFromVSTURLs, Highlighter } from 'sthl';
-import { vst } from './vst';
+import { extractLangInfoArrayFromLangsURLs, extractLangInfoArrayFromVSCEURLs, extractThemeFromThemeURLs, extractThemeFromVSCT, extractThemeFromVSCTURLs, Highlighter } from 'sthl';
+import { vsct } from './vsct';
 export const code = async (unit, compiler) => {
     let { lang } = unit.options;
     if (typeof lang !== 'string' || lang === '') {
@@ -9,19 +9,19 @@ export const code = async (unit, compiler) => {
     if (lang === 'non') {
         return Highlighter.textToPlainCode(stdnToPlainString(unit.children), unit.options.block === true);
     }
-    const infoArray = await extractLangInfoArrayFromVSECURLs([
+    const infoArray = await extractLangInfoArrayFromVSCEURLs([
         'css',
         'html',
         'json',
         'markdown-basics',
     ]
-        .concat(getNonEmptyStrsFormKey('vsec', compiler.context)), 'https://cdn.jsdelivr.net/gh/microsoft/vscode/extensions/');
-    infoArray.push(...await extractLangInfoArrayFromVSECURLs([
+        .concat(getNonEmptyStrsFormKey('vsce', compiler.context)), 'https://cdn.jsdelivr.net/gh/microsoft/vscode/extensions/');
+    infoArray.push(...await extractLangInfoArrayFromVSCEURLs([
         'st-org/st-lang',
         'microsoft/vscode-typescript-next',
     ]
-        .concat(getNonEmptyStrsFormKey('vsec-gh', compiler.context)), 'https://cdn.jsdelivr.net/gh/'));
-    infoArray.push(...await extractLangInfoArrayFromVSECURLs(await getURLsFormKey('vsec-src', compiler.context)));
+        .concat(getNonEmptyStrsFormKey('vsce-gh', compiler.context)), 'https://cdn.jsdelivr.net/gh/'));
+    infoArray.push(...await extractLangInfoArrayFromVSCEURLs(await getURLsFormKey('vsce-src', compiler.context)));
     infoArray.push(...await extractLangInfoArrayFromLangsURLs(await getURLsFormKey('langs-src', compiler.context)));
     infoArray.push({
         name: 'markdown',
@@ -33,8 +33,8 @@ export const code = async (unit, compiler) => {
         name: 'typescript',
         alias: ['ts']
     });
-    const theme = extractThemeFromVST(vst);
-    theme.push(...await extractThemeFromVSTURLs(await getURLsFormKey('vst-src', compiler.context)));
+    const theme = extractThemeFromVSCT(vsct);
+    theme.push(...await extractThemeFromVSCTURLs(await getURLsFormKey('vsct-src', compiler.context)));
     theme.push(...await extractThemeFromThemeURLs(await getURLsFormKey('theme-src', compiler.context)));
     const highlighter = new Highlighter(infoArray, theme);
     return await highlighter.highlight(stdnToPlainString(unit.children), lang, unit.options.block === true);

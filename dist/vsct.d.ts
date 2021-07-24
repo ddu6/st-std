@@ -1,4 +1,4 @@
-export declare const vst: {
+export declare const vsct: {
     tokenColors: ({
         scope: string[];
         settings: {

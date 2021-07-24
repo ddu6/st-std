@@ -56,10 +56,10 @@
     ```latex
     ```
 ]}
-{global,vsec-gh James-Yu/LaTeX-Workshop,code[]}
+{global,vsce-gh James-Yu/LaTeX-Workshop,code[]}
 After set
 {lang stdn,block,code[
-    '{global,vsec-gh James-Yu/LaTeX-Workshop,code[]}'
+    '{global,vsce-gh James-Yu/LaTeX-Workshop,code[]}'
 ]}
 latex can be highlighted
 {lang latex,code[

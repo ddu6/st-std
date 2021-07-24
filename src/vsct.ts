@@ -1,4 +1,4 @@
-export const vst={
+export const vsct={
 	"tokenColors": [
 		{
 			"scope": [
