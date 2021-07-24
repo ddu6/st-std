@@ -28,7 +28,7 @@
 ['See '{label article,ref[]}' for more.']
 []
 {label code,level 2,heading[Code]}
-['In '{lang non,code[3.unit.css]}', we set']
+['Highlighting of '{code[css]}', '{code[html]}', '{code[js]}', '{code[md]}', '{code[ts]}' and st-langs are supported.']
 {lang markdown,code[
     ```css
     '.unit.warn {'
@@ -37,11 +37,6 @@
     ```
 ]}
 {lang md,code[
-    # stdn can also be highlighted
-    ```stdn
-    '{label code,level 2,heading[Code]}'
-    ```
-    []
     # ts@next
     ```ts
     'class Text{'
@@ -52,16 +47,13 @@
     '    }'
     '}'
     ```
-    # latex
-    ```latex
-    ```
 ]}
 {global,vsce-gh James-Yu/LaTeX-Workshop,code[]}
-After set
+After setting
 {lang stdn,block,code[
     '{global,vsce-gh James-Yu/LaTeX-Workshop,code[]}'
 ]}
-latex can be highlighted
+latex can also be highlighted.
 {lang latex,code[
     '\documentclass{article}'
     '\begin{document}'
