@@ -1,9 +1,4 @@
-html {
-    --font-katex: roboto-extract, KaTeX_Main, "Segoe UI", "Microsoft YaHei", "PingFang SC", "Hiragino Sans GB", "WenQuanYi Micro Hei", sans-serif, "Apple Color Emoji", "Segoe UI Emoji", "Segoe UI Symbol";
-}
-
 .katex {
-    font-family: var(--font-katex);
     font-size: 1em;
     line-height: var(--number-ratio-line);
     white-space: pre;
