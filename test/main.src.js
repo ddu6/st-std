@@ -1,8 +1,12 @@
-import {css,cssHead,tagToUnitCompiler} from '../dist/mod'
+import {css,headCSS,tagToUnitCompiler} from '../dist/mod'
 import {compile} from '@ddu6/stc'
 import {Shell} from '@ddu6/stui'
+const headStyle=document.createElement('style')
+const customStyle=document.createElement('style')
+headStyle.textContent=headCSS
+document.body.append(headStyle)
 const shell=new Shell('Test','',css)
-shell.styleEle.textContent=cssHead+shell.styleEle.textContent
+document.body.append(customStyle)
 ;(async()=>{
     const result=await compile(await (await window.fetch('./main.stdn')).text(),'',{
         dftTagToUnitCompiler:tagToUnitCompiler
@@ -11,7 +15,7 @@ shell.styleEle.textContent=cssHead+shell.styleEle.textContent
         return
     }
     const {documentFragment,context}=result
-    shell.styleEle.textContent+=context.css
+    customStyle.textContent=context.css
     shell.append(documentFragment)
     console.log(context)
 })()

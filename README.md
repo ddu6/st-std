@@ -1,10 +1,14 @@
 # ST STD
 ```js
-import {css,cssHead,tagToUnitCompiler} from 'st-std'
+import {css,headCSS,tagToUnitCompiler} from 'st-std'
 import {compile} from '@ddu6/stc'
 import {Shell} from '@ddu6/stui'
+const headStyle=document.createElement('style')
+const customStyle=document.createElement('style')
+headStyle.textContent=headCSS
+document.body.append(headStyle)
 const shell=new Shell('','',css)
-shell.styleEle.textContent=cssHead+shell.styleEle.textContent
+document.body.append(customStyle)
 ;(async()=>{
     const result=await compile(`{'a_1=1'}
     {display,'a_2=2'}
@@ -24,7 +28,7 @@ shell.styleEle.textContent=cssHead+shell.styleEle.textContent
         return
     }
     const {documentFragment,context}=result
-    shell.styleEle.textContent+=context.css
+    customStyle.textContent=context.css
     shell.append(documentFragment)
     console.log(context)
 })()
