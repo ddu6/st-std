@@ -1,6 +1,13 @@
-import { stdnToPlainString } from '@ddu6/stc';
-import { renderToString } from 'katex';
+import { Compiler, stdnToPlainString } from '@ddu6/stc';
 export const katex = async (unit, compiler) => {
+    let mod;
+    try {
+        mod = await new Function(`return import('https://cdn.jsdelivr.net/npm/katex@0.13.13/dist/katex.mjs')`)();
+    }
+    catch (err) {
+        return Compiler.createErrorElement('Error');
+    }
+    const { default: { renderToString } } = mod;
     const element = document.createElement('span');
     let string = '';
     const eles = [];
