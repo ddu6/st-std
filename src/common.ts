@@ -1,7 +1,30 @@
-export function removeAnchors(fragment:DocumentFragment){
-    const span=document.createElement('span')
-    span.append(fragment)
-    return span.innerHTML
-    .replace(/<\s*a\b([\s\S]*?)>/g,'<span$1>')
-    .replace(/<\s*\/a\s*>/g,'</span>')
+export function replaceAnchors(fragment:DocumentFragment){
+    for(const a of fragment.querySelectorAll('a')){
+        const span=document.createElement('span')
+        for(const {name,value} of a.attributes){
+            if(avoidAttributes.includes(name)){
+                continue
+            }
+            try{
+                span.setAttribute(name,value)
+            }catch(err){
+                console.log(err)
+            }
+        }
+        for(const child of a.childNodes){
+            span.append(child)
+        }
+        a.replaceWith(span)
+    }
+    return fragment
 }
+const avoidAttributes=[
+    'download',
+    'href',
+    'hreflang',
+    'ping',
+    'referrerpolicy',
+    'rel',
+    'target',
+    'type'
+]

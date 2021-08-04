@@ -1,1 +1,1 @@
-export declare function removeAnchors(fragment: DocumentFragment): string;
+export declare function replaceAnchors(fragment: DocumentFragment): DocumentFragment;

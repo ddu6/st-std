@@ -1,6 +1,6 @@
 import { Compiler } from "@ddu6/stc";
 import { CommonEle, Div, Span } from "stce";
-import { removeAnchors } from "./common";
+import { replaceAnchors } from "./common";
 export const index = async (unit, compiler) => {
     const { label } = unit.options;
     if (typeof label !== 'string' || label === '') {
@@ -51,7 +51,7 @@ export const index = async (unit, compiler) => {
     }
     const { mark, desc } = unit.options;
     if (Array.isArray(mark)) {
-        markEle.setHTML(removeAnchors(await compiler.compileInlineSTDN(mark)));
+        markEle.append(replaceAnchors(await compiler.compileInlineSTDN(mark)));
     }
     else if (typeof mark === 'string') {
         markEle.setText(mark);
