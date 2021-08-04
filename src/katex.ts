@@ -1,12 +1,5 @@
-import { Compiler, stdnToPlainString, UnitCompiler } from '@ddu6/stc'
+import { stdnToPlainString, UnitCompiler } from '@ddu6/stc'
 export const katex:UnitCompiler=async (unit,compiler)=>{
-    let mod:any
-    try{
-        mod=await new Function(`return import('https://cdn.jsdelivr.net/npm/katex@0.13.13/dist/katex.mjs')`)()
-    }catch(err){
-        return Compiler.createErrorElement('Error')
-    }
-    const {default:{renderToString}}=mod
     const element=document.createElement('span')
     let string=''
     const eles:HTMLElement[]=[]
@@ -37,23 +30,26 @@ export const katex:UnitCompiler=async (unit,compiler)=>{
         string=customCommand+'\n'+string
     }
     const displayMode=unit.options.display===true
-    element.innerHTML=renderToString(string,{
-        displayMode,
-        output:'html',
-        strict:false,
-        throwOnError: false,
-        trust:true,
-    })
-    for(let i=0;i<eles.length;i++){
-        const tmp=element.querySelector(`.tmpPlaceholder${i}`)
-        if(tmp===null){
-            continue
-        }
-        tmp.replaceWith(eles[i])
-    }
     if(displayMode){
         element.classList.add('display')
     }
+    ;(async ()=>{
+        const {default:{renderToString}}=await new Function(`return import('https://cdn.jsdelivr.net/npm/katex@0.13.13/dist/katex.mjs')`)()
+        element.innerHTML=renderToString(string,{
+            displayMode,
+            output:'html',
+            strict:false,
+            throwOnError: false,
+            trust:true,
+        })
+        for(let i=0;i<eles.length;i++){
+            const tmp=element.querySelector(`.tmpPlaceholder${i}`)
+            if(tmp===null){
+                continue
+            }
+            tmp.replaceWith(eles[i])
+        }
+    })().catch(console.log)
     return element
 }
 export const aligned=katex
