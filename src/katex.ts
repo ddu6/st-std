@@ -2,7 +2,7 @@ import { stdnToPlainString, UnitCompiler } from '@ddu6/stc'
 export const katex:UnitCompiler=async (unit,compiler)=>{
     const element=document.createElement('span')
     let string=''
-    const eles:HTMLElement[]=[]
+    const eles:(HTMLElement|SVGElement)[]=[]
     for(let i=0;i<unit.children.length;i++){
         const line=unit.children[i]
         for(let i=0;i<line.length;i++){
