@@ -1,56 +1,26 @@
 import { Compiler } from '@ddu6/stc';
-import { Anchor, Div, Span } from 'stce';
+import { Anchor, Span } from 'stce';
 import { replaceAnchors } from './common';
 export const ref = async (unit, compiler) => {
-    const { label } = unit.options;
-    if (typeof label !== 'string' || label === '') {
-        return Compiler.createErrorElement('Label required');
+    const id = unit.options['ref-id'];
+    if (typeof id !== 'string' || id === '') {
+        return Compiler.createErrorElement('Id required');
     }
-    const indexInfo = compiler.context.labelToIndexInfo[label];
+    const indexInfo = compiler.context.idToIndexInfo[id];
     if (indexInfo === undefined) {
         return Compiler.createErrorElement('?');
-    }
-    let element;
-    let df;
-    const block = unit.options.block === true;
-    const reverse = unit.options.reverse === true;
-    if (block) {
-        element = new Div();
-        df = await compiler.compileSTDN(unit.children);
-    }
-    else {
-        element = new Span();
-        df = await compiler.compileInlineSTDN(unit.children);
     }
     const tagEle = new Span(['tag']).setText(indexInfo.orbit
         .replace(/^heading$/, 'section')
         .replace(/^equation$/, 'eq'));
-    const markEle = new Anchor('#' + label, ['mark'], '');
+    const markEle = new Anchor('#' + id, ['mark'], '');
     const descEle = new Span(['desc']);
-    const caption = new Span(['caption'])
+    const element = new Span().append(new Span(['caption'])
         .append(tagEle)
         .append(markEle)
-        .append(descEle);
-    const content = new Span(['content']).append(df);
-    if (reverse) {
-        element
-            .append(content)
-            .append(caption);
-    }
-    else {
-        element
-            .append(caption)
-            .append(content);
-    }
-    const { mark, desc } = unit.options;
-    if (Array.isArray(mark)) {
-        markEle.append(replaceAnchors(await compiler.compileInlineSTDN(mark)));
-    }
-    else if (typeof mark === 'string') {
-        markEle.setText(mark);
-    }
-    else if (typeof mark === 'number') {
-        markEle.setText(mark.toString());
+        .append(descEle));
+    if (unit.children.length > 0) {
+        markEle.append(replaceAnchors(await compiler.compileInlineSTDN(unit.children)));
     }
     else {
         const { mark } = indexInfo.unit.options;
@@ -67,6 +37,7 @@ export const ref = async (unit, compiler) => {
             markEle.setText(indexInfo.index.join('.'));
         }
     }
+    const { desc } = unit.options;
     if (Array.isArray(desc)) {
         descEle.append(await compiler.compileInlineSTDN(desc));
     }

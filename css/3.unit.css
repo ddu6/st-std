@@ -1,13 +1,4 @@
 /* caption */
-.unit.pure {
-    position: relative;
-}
-
-.unit.pure>.caption {
-    position: absolute;
-    visibility: hidden;
-}
-
 .unit>.caption>.tag:not(:empty) {
     margin-right: var(--length-space);
 }
@@ -29,11 +20,7 @@ div.unit>.caption:first-child>.tag {
     content: ")";
 }
 
-.unit.plain>.caption>.desc {
-    display: none;
-}
-
-.unit:not(.pure)>.caption+.content:not(:empty)::before {
+.unit>.caption+.content:not(:empty)::before {
     content: "";
     margin-left: var(--length-gap);
 }
@@ -102,10 +89,6 @@ div.unit>.caption:first-child>.tag {
 }
 
 .unit.heading>.caption>.tag {
-    display: none;
-}
-
-.unit.heading>.caption>.desc {
     display: none;
 }
 

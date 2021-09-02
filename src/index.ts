@@ -2,11 +2,11 @@ import { Compiler, UnitCompiler } from "@ddu6/stc"
 import { CommonEle, Div, Span } from "stce"
 import { replaceAnchors } from "./common"
 export const index:UnitCompiler=async (unit,compiler)=>{
-    const {label}=unit.options
-    if(typeof label!=='string'||label===''){
-        return Compiler.createErrorElement('Label required')
+    const {id}=unit.options
+    if(typeof id!=='string'||id===''){
+        return Compiler.createErrorElement('Id required')
     }
-    const indexInfo=compiler.context.labelToIndexInfo[label]
+    const indexInfo=compiler.context.idToIndexInfo[id]
     if(indexInfo===undefined){
         return Compiler.createErrorElement('Error')
     }
@@ -27,11 +27,6 @@ export const index:UnitCompiler=async (unit,compiler)=>{
         .replace(/^equation$/,'eq')
     )
     const markEle=new CommonEle('a',['mark'])
-    try{
-        markEle.element.id=label
-    }catch(err){
-        console.log(err)
-    }
     const descEle=new Span(['desc'])
     const caption=new Span(['caption'])
     .append(tagEle)
