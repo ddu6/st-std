@@ -4,16 +4,16 @@
 {global,'\def\C{\mathbb C}'}
 {global,'\def\P{\mathbb P}'}
 {css-src './css.urls',ucs-src './1/ucs.urls',global[]}
-[]
-{label eg,heading[Examples]}
+{label eg, class pure, heading[{h2[Examples]}]}
 [{name DDU,hi[]}' Here are some interesting examples.']
 []
 {label eq,level 2,heading[Equation]}
 {'\C\P^1\cong S^1'}
 {display,'a_2=2'}
 ['Let '{'a_3=3'}.]
-{label eq1,equation[{'a_4=4'}]}
+{label eq1, class pure, equation[{'a_4=4'}]}
 {label eq2,mark{[[{label eq1,class plain,ref[]}{'\''}]]},equation[{'a_5=5'}]}
+{label eq1,class plain,ref[]}
 {class display,aligned[
     ['a_6&=6\ \text{see '{label eq2,ref[]}'}\\\\']
     'a_{1000}&=1000'

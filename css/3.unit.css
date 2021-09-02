@@ -1,15 +1,23 @@
 /* caption */
+.pure {
+    position: relative;
+}
+
+.pure>.caption {
+    position: absolute;
+    visibility: hidden;
+}
+
 .caption>.tag:not(:empty) {
     margin-right: var(--length-space);
 }
 
-.plain.caption>.tag,
-.plain>.caption>.tag {
-    display: none;
-}
-
 div>.caption:first-child>.tag {
     text-transform: capitalize;
+}
+
+.plain>.caption>.tag {
+    display: none;
 }
 
 .caption>.desc:not(:empty)::before {
@@ -21,40 +29,17 @@ div>.caption:first-child>.tag {
     content: ")";
 }
 
-.plain.caption>.desc,
 .plain>.caption>.desc {
     display: none;
 }
 
-.caption+.content:not(:empty)::before {
+:not(.pure)>.caption+.content:not(:empty)::before {
     content: "";
     margin-left: var(--length-gap);
 }
 
 .caption+.content>div:first-child {
     display: inline;
-}
-
-/* contents */
-.unit.contents::before {
-    content: "Contents";
-    text-align: center;
-    display: block;
-    font-size: var(--length-font-heading);
-    margin: var(--length-gap) 0;
-}
-
-.unit.contents>.item.level1 {
-    font-size: calc((1em + var(--length-font-heading)) / 2);
-    margin: var(--length-space) 0;
-}
-
-.unit.contents>.item:not(.level1) {
-    margin-left: var(--length-tab);
-}
-
-.unit.contents>.item:not(.level1):not(.level2) {
-    margin-left: calc(2 * var(--length-tab));
 }
 
 /* display */
@@ -109,8 +94,11 @@ div>.caption:first-child>.tag {
 
 /* heading */
 .unit.heading {
-    font-size: var(--length-font-heading);
     margin: var(--length-gap) 0;
+}
+
+.unit.heading:not(.pure) {
+    font-size: var(--length-font-heading);
 }
 
 .heading>.caption>.tag {
