@@ -13,7 +13,7 @@ export const ref = async (unit, compiler) => {
     const tagEle = new Span(['tag']).setText(indexInfo.orbit
         .replace(/^heading$/, 'section')
         .replace(/^equation$/, 'eq'));
-    const markEle = new Anchor('#' + id, ['mark'], '');
+    const markEle = new Anchor('#' + encodeURIComponent(id), ['mark'], '');
     const descEle = new Span(['desc']);
     const element = new Span().append(new Span(['caption'])
         .append(tagEle)
