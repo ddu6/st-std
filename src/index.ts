@@ -22,8 +22,7 @@ export const index:UnitCompiler=async (unit,compiler)=>{
         df=await compiler.compileInlineSTDN(unit.children)
     }
     const tagEle=new Span(['tag']).setText(
-        unit.tag
-        .replace(/^index$/,indexInfo.orbit)
+        indexInfo.orbit
         .replace(/^heading$/,'section')
         .replace(/^equation$/,'eq')
     )

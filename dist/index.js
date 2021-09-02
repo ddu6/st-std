@@ -22,8 +22,7 @@ export const index = async (unit, compiler) => {
         element = new Span();
         df = await compiler.compileInlineSTDN(unit.children);
     }
-    const tagEle = new Span(['tag']).setText(unit.tag
-        .replace(/^index$/, indexInfo.orbit)
+    const tagEle = new Span(['tag']).setText(indexInfo.orbit
         .replace(/^heading$/, 'section')
         .replace(/^equation$/, 'eq'));
     const markEle = new CommonEle('a', ['mark']);
