@@ -97,7 +97,8 @@ div.unit>.caption:first-child>.tag {
     margin: var(--length-gap) 0;
 }
 
-.unit.proof>.caption>.tag {
+.unit.proof>.caption>.tag,
+.unit.proof>.caption>.mark {
     font-weight: bold;
     font-style: italic;
 }
