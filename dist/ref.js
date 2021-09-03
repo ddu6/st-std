@@ -3,8 +3,8 @@ import { Anchor, Span } from 'stce';
 import { replaceAnchors } from './common';
 export const ref = async (unit, compiler) => {
     const id = unit.options['ref-id'];
-    if (typeof id !== 'string' || id === '') {
-        return Compiler.createErrorElement('Id required');
+    if (typeof id !== 'string' || id.length === 0) {
+        return Compiler.createErrorElement('Ref id required');
     }
     const indexInfo = compiler.context.idToIndexInfo[id];
     if (indexInfo === undefined) {

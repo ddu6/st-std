@@ -1,9 +1,8 @@
 import { Compiler, UnitCompiler } from "@ddu6/stc"
-import { CommonEle, Div, Span } from "stce"
-import { replaceAnchors } from "./common"
+import { Div, Span } from "stce"
 export const index:UnitCompiler=async (unit,compiler)=>{
     const {id}=unit.options
-    if(typeof id!=='string'||id===''){
+    if(typeof id!=='string'||id.length===0){
         return Compiler.createErrorElement('Id required')
     }
     const indexInfo=compiler.context.idToIndexInfo[id]
@@ -26,7 +25,7 @@ export const index:UnitCompiler=async (unit,compiler)=>{
         .replace(/^heading$/,'section')
         .replace(/^equation$/,'eq')
     )
-    const markEle=new CommonEle('a',['mark'])
+    const markEle=new Span(['mark'])
     const descEle=new Span(['desc'])
     const caption=new Span(['caption'])
     .append(tagEle)
@@ -44,7 +43,7 @@ export const index:UnitCompiler=async (unit,compiler)=>{
     }
     const {mark,desc}=unit.options
     if(Array.isArray(mark)){
-        markEle.append(replaceAnchors(await compiler.compileInlineSTDN(mark)))
+        markEle.append(await compiler.compileInlineSTDN(mark))
     }else if(typeof mark==='string'){
         markEle.setText(mark)
     }else if(typeof mark==='number'){

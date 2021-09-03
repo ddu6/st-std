@@ -4,7 +4,7 @@ import {vsct} from './vsct'
 export const code:UnitCompiler=async (unit,compiler)=>{
     const element=Highlighter.textToPlainElement(stdnToPlainString(unit.children),unit.options.block===true)
     let {lang}=unit.options
-    if(typeof lang!=='string'||lang===''){
+    if(typeof lang!=='string'||lang.length===0){
         lang='non'
     }
     if(lang==='non'){
@@ -18,7 +18,7 @@ export const code:UnitCompiler=async (unit,compiler)=>{
                 'json',
                 'markdown-basics',
             ]
-            .concat(getNonEmptyStrsFormKey('vsce',compiler.context)),
+            .concat(getStrsFormKey('vsce',compiler.context)),
             'https://cdn.jsdelivr.net/gh/microsoft/vscode/extensions/'
         )
         infoArray.push(...await extractLangInfoArrayFromVSCEURLs(
@@ -26,7 +26,7 @@ export const code:UnitCompiler=async (unit,compiler)=>{
                 'st-org/st-lang',
                 'microsoft/vscode-typescript-next',
             ]
-            .concat(getNonEmptyStrsFormKey('vsce-gh',compiler.context)),
+            .concat(getStrsFormKey('vsce-gh',compiler.context)),
             'https://cdn.jsdelivr.net/gh/'
         ))
         infoArray.push(...await extractLangInfoArrayFromVSCEURLs(await getURLsFormKey('vsce-src',compiler.context)))
@@ -51,15 +51,15 @@ export const code:UnitCompiler=async (unit,compiler)=>{
     })().catch(console.log)
     return element
 }
-function getNonEmptyStrsFormKey(key:string,context:Context){
+function getStrsFormKey(key:string,context:Context){
     const strs:string[]=[]
     for(const val of (context.tagToGlobalOptions.code??{})[key]??[]){
-        if(typeof val==='string'&&val!==''){
+        if(typeof val==='string'){
             strs.push(val)
         }
     }
     return strs
 }
 async function getURLsFormKey(key:string,context:Context){
-    return await urlsToAbsURLs(getNonEmptyStrsFormKey(key,context),context.dir)
+    return await urlsToAbsURLs(getStrsFormKey(key,context),context.dir)
 }
