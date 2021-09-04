@@ -79,11 +79,8 @@ div.unit>.caption:first-child>.tag {
 
 /* heading */
 .unit.heading {
-    margin: var(--length-gap) 0;
-}
-
-.unit.heading:not(.pure) {
     font-size: var(--length-font-heading);
+    margin: var(--length-gap) 0;
 }
 
 .unit.heading>.caption>.tag {
