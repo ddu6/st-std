@@ -1,12 +1,11 @@
 import { stdnToPlainString, UnitCompiler } from '@ddu6/stc'
 export const katex:UnitCompiler=async (unit,compiler)=>{
     const element=document.createElement('span')
-    let string=''
+    const array:string[]=[]
     const eles:(HTMLElement|SVGElement)[]=[]
-    for(let i=0;i<unit.children.length;i++){
-        const line=unit.children[i]
-        for(let i=0;i<line.length;i++){
-            const inline=line[i]
+    for(const line of unit.children){
+        let string=''
+        for(const inline of line){
             if(typeof inline==='string'){
                 string+=inline
                 continue
@@ -14,10 +13,9 @@ export const katex:UnitCompiler=async (unit,compiler)=>{
             string+=`\\htmlClass{tmpPlaceholder${eles.length.toString()}}{}`
             eles.push(await compiler.compileUnit(inline))
         }
-        if(i!==unit.children.length-1){
-            string+='\n'
-        }
+        array.push(string)
     }
+    let string=array.join('\n')
     if(unit.tag!=='katex'){
         string=`\\begin{${unit.tag}}${string}\\end{${unit.tag}}`
     }
@@ -39,7 +37,7 @@ export const katex:UnitCompiler=async (unit,compiler)=>{
             displayMode,
             output:'html',
             strict:false,
-            throwOnError: false,
+            throwOnError:false,
             trust:true,
         })
         for(let i=0;i<eles.length;i++){
