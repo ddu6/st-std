@@ -11,6 +11,20 @@ export const code:UnitCompiler=async (unit,compiler)=>{
         return element
     }
     ;(async ()=>{
+        let text=stdnToPlainString(unit.children)
+        const {src}=unit.options
+        if(typeof src==='string'){
+            try{
+                const res=await fetch(new URL(src,compiler.context.dir).href)
+                if(res.ok){
+                    const df=Highlighter.textToPlainDocumentFragment(text=await res.text())
+                    element.innerHTML=''
+                    element.append(df)
+                }
+            }catch(err){
+                console.log(err)
+            }
+        }
         const infoArray=await extractLangInfoArrayFromVSCEURLs(
             [
                 'css',
@@ -45,7 +59,7 @@ export const code:UnitCompiler=async (unit,compiler)=>{
         theme.push(...await extractThemeFromVSCTURLs(await getURLsFormKey('vsct-src',compiler.context)))
         theme.push(...await extractThemeFromThemeURLs(await getURLsFormKey('theme-src',compiler.context)))
         const highlighter=new Highlighter(infoArray,theme)
-        const df=await highlighter.highlightToDocumentFragment(stdnToPlainString(unit.children),lang)
+        const df=await highlighter.highlightToDocumentFragment(text,lang)
         element.innerHTML=''
         element.append(df)
     })().catch(console.log)
