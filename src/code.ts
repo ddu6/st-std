@@ -2,7 +2,8 @@ import {Context,stdnToPlainString, UnitCompiler,urlsToAbsURLs} from '@ddu6/stc'
 import {extractLangInfoArrayFromLangsURLs, extractLangInfoArrayFromVSCEURLs, extractThemeFromThemeURLs, extractThemeFromVSCT, extractThemeFromVSCTURLs, Highlighter} from 'sthl'
 import {vsct} from './vsct'
 export const code:UnitCompiler=async (unit,compiler)=>{
-    const element=Highlighter.textToPlainElement(stdnToPlainString(unit.children),unit.options.block===true)
+    let text=stdnToPlainString(unit.children)
+    const element=Highlighter.textToPlainElement(text,unit.options.block===true)
     let {lang}=unit.options
     if(typeof lang!=='string'||lang.length===0){
         lang='non'
@@ -11,7 +12,6 @@ export const code:UnitCompiler=async (unit,compiler)=>{
         return element
     }
     ;(async ()=>{
-        let text=stdnToPlainString(unit.children)
         const {src}=unit.options
         if(typeof src==='string'){
             try{
