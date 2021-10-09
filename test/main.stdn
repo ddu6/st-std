@@ -3,3 +3,4 @@
     {display, 'a^n+b^n=c^n.'}
 ]}
 ['The first successful proof of '{ref-id t1, ref []}' was released in 1994 by Andrew Wiles.']
+{style height:100vh}
