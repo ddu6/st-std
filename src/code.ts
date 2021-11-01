@@ -1,5 +1,5 @@
-import {Context,stdnToPlainString, UnitCompiler,urlsToAbsURLs} from '@ddu6/stc'
-import {extractLangInfoArrayFromLangsURLs, extractLangInfoArrayFromVSCEURLs, extractThemeFromThemeURLs, extractThemeFromVSCT, extractThemeFromVSCTURLs, Highlighter} from 'sthl'
+import {getGlobalStrings,getGlobalURLs,stdnToPlainString, UnitCompiler} from '@ddu6/stc'
+import {extractLangInfoArrayFromLangsURLs, extractLangInfoArrayFromVSCEURLs, extractThemeFromThemeURLs, extractThemeFromVSCT, extractThemeFromVSCTURLs, Highlighter, LangInfo, Theme} from 'sthl'
 import {vsct} from './vsct'
 export const code:UnitCompiler=async (unit,compiler)=>{
     let text=stdnToPlainString(unit.children)
@@ -25,55 +25,49 @@ export const code:UnitCompiler=async (unit,compiler)=>{
                 console.log(err)
             }
         }
-        const infoArray=await extractLangInfoArrayFromVSCEURLs(
-            [
-                'css',
-                'html',
-                'json',
-                'markdown-basics',
-            ]
-            .concat(getStrsFormKey('vsce',compiler.context)),
-            'https://cdn.jsdelivr.net/gh/microsoft/vscode/extensions/'
-        )
-        infoArray.push(...await extractLangInfoArrayFromVSCEURLs(
-            [
-                'st-org/st-lang',
-                'microsoft/vscode-typescript-next',
-            ]
-            .concat(getStrsFormKey('vsce-gh',compiler.context)),
-            'https://cdn.jsdelivr.net/gh/'
-        ))
-        infoArray.push(...await extractLangInfoArrayFromVSCEURLs(await getURLsFormKey('vsce-src',compiler.context)))
-        infoArray.push(...await extractLangInfoArrayFromLangsURLs(await getURLsFormKey('langs-src',compiler.context)))
-        infoArray.push({
-            name:'markdown',
-            alias:['md']
-        },{
-            name:'javascript',
-            alias:['js']
-        },{
-            name:'typescript',
-            alias:['ts']
-        })
-        const theme=extractThemeFromVSCT(vsct)
-        theme.push(...await extractThemeFromVSCTURLs(await getURLsFormKey('vsct-src',compiler.context)))
-        theme.push(...await extractThemeFromThemeURLs(await getURLsFormKey('theme-src',compiler.context)))
-        const highlighter=new Highlighter(infoArray,theme)
+        let langInfoArray=<LangInfo[]|undefined>compiler.context.variables['code.langInfoArray']
+        let theme=<Theme|undefined>compiler.context.variables['code.theme']
+        if(langInfoArray===undefined){
+            langInfoArray=compiler.context.variables['code.langInfoArray']=await extractLangInfoArrayFromVSCEURLs(
+                [
+                    'css',
+                    'html',
+                    'json',
+                    'markdown-basics',
+                ]
+                .concat(getGlobalStrings('vsce','code',compiler.context.tagToGlobalOptions)),
+                'https://cdn.jsdelivr.net/gh/microsoft/vscode/extensions/'
+            )
+            langInfoArray.push(...await extractLangInfoArrayFromVSCEURLs(
+                [
+                    'st-org/st-lang',
+                    'microsoft/vscode-typescript-next',
+                ]
+                .concat(getGlobalStrings('vsce-gh','code',compiler.context.tagToGlobalOptions)),
+                'https://cdn.jsdelivr.net/gh/'
+            ))
+            langInfoArray.push(...await extractLangInfoArrayFromVSCEURLs(await getGlobalURLs('vsce-src','code',compiler.context.tagToGlobalOptions,compiler.context.dir)))
+            langInfoArray.push(...await extractLangInfoArrayFromLangsURLs(await getGlobalURLs('langs-src','code',compiler.context.tagToGlobalOptions,compiler.context.dir)))
+            langInfoArray.push({
+                name:'markdown',
+                alias:['md']
+            },{
+                name:'javascript',
+                alias:['js']
+            },{
+                name:'typescript',
+                alias:['ts']
+            })
+        }
+        if(theme===undefined){
+            theme=compiler.context.variables['code.theme']=extractThemeFromVSCT(vsct)
+            theme.push(...await extractThemeFromVSCTURLs(await getGlobalURLs('vsct-src','code',compiler.context.tagToGlobalOptions,compiler.context.dir)))
+            theme.push(...await extractThemeFromThemeURLs(await getGlobalURLs('theme-src','code',compiler.context.tagToGlobalOptions,compiler.context.dir)))
+        }
+        const highlighter=new Highlighter(langInfoArray,theme)
         const df=await highlighter.highlightToDocumentFragment(text,lang)
         element.innerHTML=''
         element.append(df)
     })().catch(console.log)
     return element
-}
-function getStrsFormKey(key:string,context:Context){
-    const strs:string[]=[]
-    for(const val of (context.tagToGlobalOptions.code??{})[key]??[]){
-        if(typeof val==='string'){
-            strs.push(val)
-        }
-    }
-    return strs
-}
-async function getURLsFormKey(key:string,context:Context){
-    return await urlsToAbsURLs(getStrsFormKey(key,context),context.dir)
 }
