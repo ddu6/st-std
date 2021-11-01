@@ -27,10 +27,9 @@ export const code = async (unit, compiler) => {
                 console.log(err);
             }
         }
-        let langInfoArray = compiler.context.variables['code.langInfoArray'];
-        let theme = compiler.context.variables['code.theme'];
-        if (langInfoArray === undefined) {
-            langInfoArray = compiler.context.variables['code.langInfoArray'] = await extractLangInfoArrayFromVSCEURLs([
+        let highlighter = compiler.context.variables['code.highlighter'];
+        if (highlighter === undefined) {
+            const langInfoArray = await extractLangInfoArrayFromVSCEURLs([
                 'css',
                 'html',
                 'json',
@@ -54,13 +53,11 @@ export const code = async (unit, compiler) => {
                 name: 'typescript',
                 alias: ['ts']
             });
-        }
-        if (theme === undefined) {
-            theme = compiler.context.variables['code.theme'] = extractThemeFromVSCT(vsct);
+            const theme = extractThemeFromVSCT(vsct);
             theme.push(...await extractThemeFromVSCTURLs(await getGlobalURLs('vsct-src', 'code', compiler.context.tagToGlobalOptions, compiler.context.dir)));
             theme.push(...await extractThemeFromThemeURLs(await getGlobalURLs('theme-src', 'code', compiler.context.tagToGlobalOptions, compiler.context.dir)));
+            highlighter = compiler.context.variables['code.highlighter'] = new Highlighter(langInfoArray, theme);
         }
-        const highlighter = new Highlighter(langInfoArray, theme);
         const df = await highlighter.highlightToDocumentFragment(text, lang);
         element.innerHTML = '';
         element.append(df);

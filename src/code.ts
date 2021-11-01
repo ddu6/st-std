@@ -1,5 +1,5 @@
 import {getGlobalStrings,getGlobalURLs,stdnToPlainString, UnitCompiler} from '@ddu6/stc'
-import {extractLangInfoArrayFromLangsURLs, extractLangInfoArrayFromVSCEURLs, extractThemeFromThemeURLs, extractThemeFromVSCT, extractThemeFromVSCTURLs, Highlighter, LangInfo, Theme} from 'sthl'
+import {extractLangInfoArrayFromLangsURLs, extractLangInfoArrayFromVSCEURLs, extractThemeFromThemeURLs, extractThemeFromVSCT, extractThemeFromVSCTURLs, Highlighter} from 'sthl'
 import {vsct} from './vsct'
 export const code:UnitCompiler=async (unit,compiler)=>{
     let text=stdnToPlainString(unit.children)
@@ -25,10 +25,9 @@ export const code:UnitCompiler=async (unit,compiler)=>{
                 console.log(err)
             }
         }
-        let langInfoArray=<LangInfo[]|undefined>compiler.context.variables['code.langInfoArray']
-        let theme=<Theme|undefined>compiler.context.variables['code.theme']
-        if(langInfoArray===undefined){
-            langInfoArray=compiler.context.variables['code.langInfoArray']=await extractLangInfoArrayFromVSCEURLs(
+        let highlighter=<Highlighter|undefined>compiler.context.variables['code.highlighter']
+        if(highlighter===undefined){
+            const langInfoArray=await extractLangInfoArrayFromVSCEURLs(
                 [
                     'css',
                     'html',
@@ -58,13 +57,11 @@ export const code:UnitCompiler=async (unit,compiler)=>{
                 name:'typescript',
                 alias:['ts']
             })
-        }
-        if(theme===undefined){
-            theme=compiler.context.variables['code.theme']=extractThemeFromVSCT(vsct)
+            const theme=extractThemeFromVSCT(vsct)
             theme.push(...await extractThemeFromVSCTURLs(await getGlobalURLs('vsct-src','code',compiler.context.tagToGlobalOptions,compiler.context.dir)))
             theme.push(...await extractThemeFromThemeURLs(await getGlobalURLs('theme-src','code',compiler.context.tagToGlobalOptions,compiler.context.dir)))
+            highlighter=compiler.context.variables['code.highlighter']=new Highlighter(langInfoArray,theme)
         }
-        const highlighter=new Highlighter(langInfoArray,theme)
         const df=await highlighter.highlightToDocumentFragment(text,lang)
         element.innerHTML=''
         element.append(df)
