@@ -44,6 +44,10 @@ export const katex:UnitCompiler=async (unit,compiler)=>{
         string=customCommand+'\n'+string
     }
     const displayMode=unit.options.display===true
+    ||unit.tag==='align'
+    ||unit.tag==='alignat'
+    ||unit.tag==='CD'
+    ||unit.tag==='gather'
     if(displayMode){
         element.classList.add('display')
     }
@@ -84,8 +88,8 @@ export const dcases=katex
 export const drcases=katex
 export const gather=katex
 export const matrix=katex
-export const rcases=katex
 export const pmatrix=katex
+export const rcases=katex
 export const smallmatrix=katex
 export const split=katex
 export const subarray=katex
