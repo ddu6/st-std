@@ -18,7 +18,7 @@ export const katex = async (unit, compiler) => {
     let string = array.join('\n');
     if (unit.tag !== 'katex') {
         let env = unit.tag;
-        if (env.includes('matrix')
+        if (env.includes('matrix') && env !== 'smallmatrix'
             || env === 'align'
             || env === 'alignat'
             || env === 'gather') {

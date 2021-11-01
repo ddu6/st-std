@@ -19,7 +19,7 @@ export const katex:UnitCompiler=async (unit,compiler)=>{
     if(unit.tag!=='katex'){
         let env=unit.tag
         if(
-            env.includes('matrix')
+            env.includes('matrix')&&env!=='smallmatrix'
             ||env==='align'
             ||env==='alignat'
             ||env==='gather'
