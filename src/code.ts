@@ -34,7 +34,8 @@ export const code:UnitCompiler=async (unit,compiler)=>{
                     'json',
                     'markdown-basics',
                 ]
-                .concat(getGlobalStrings('vsce','code',compiler.context.tagToGlobalOptions)),
+                .concat(getGlobalStrings('vsce','code',compiler.context.tagToGlobalOptions))
+                .map(val=>`${val}/package.json`),
                 'https://cdn.jsdelivr.net/gh/microsoft/vscode/extensions/'
             )
             langInfoArray.push(...await extractLangInfoArrayFromVSCEURLs(
@@ -42,7 +43,8 @@ export const code:UnitCompiler=async (unit,compiler)=>{
                     'st-org/st-lang',
                     'microsoft/vscode-typescript-next',
                 ]
-                .concat(getGlobalStrings('vsce-gh','code',compiler.context.tagToGlobalOptions)),
+                .concat(getGlobalStrings('vsce-gh','code',compiler.context.tagToGlobalOptions))
+                .map(val=>`${val}/package.json`),
                 'https://cdn.jsdelivr.net/gh/'
             ))
             langInfoArray.push(...await extractLangInfoArrayFromVSCEURLs(await getGlobalURLs('vsce-src','code',compiler.context.tagToGlobalOptions,compiler.context.dir)))

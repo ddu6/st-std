@@ -1,3 +1,13 @@
+const avoidAttributes = [
+    'download',
+    'href',
+    'hreflang',
+    'ping',
+    'referrerpolicy',
+    'rel',
+    'target',
+    'type'
+];
 export function replaceAnchors(fragment) {
     for (const a of fragment.querySelectorAll('a')) {
         const span = document.createElement('span');
@@ -19,13 +29,3 @@ export function replaceAnchors(fragment) {
     }
     return fragment;
 }
-const avoidAttributes = [
-    'download',
-    'href',
-    'hreflang',
-    'ping',
-    'referrerpolicy',
-    'rel',
-    'target',
-    'type'
-];

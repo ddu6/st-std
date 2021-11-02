@@ -35,12 +35,14 @@ export const code = async (unit, compiler) => {
                 'json',
                 'markdown-basics',
             ]
-                .concat(getGlobalStrings('vsce', 'code', compiler.context.tagToGlobalOptions)), 'https://cdn.jsdelivr.net/gh/microsoft/vscode/extensions/');
+                .concat(getGlobalStrings('vsce', 'code', compiler.context.tagToGlobalOptions))
+                .map(val => `${val}/package.json`), 'https://cdn.jsdelivr.net/gh/microsoft/vscode/extensions/');
             langInfoArray.push(...await extractLangInfoArrayFromVSCEURLs([
                 'st-org/st-lang',
                 'microsoft/vscode-typescript-next',
             ]
-                .concat(getGlobalStrings('vsce-gh', 'code', compiler.context.tagToGlobalOptions)), 'https://cdn.jsdelivr.net/gh/'));
+                .concat(getGlobalStrings('vsce-gh', 'code', compiler.context.tagToGlobalOptions))
+                .map(val => `${val}/package.json`), 'https://cdn.jsdelivr.net/gh/'));
             langInfoArray.push(...await extractLangInfoArrayFromVSCEURLs(await getGlobalURLs('vsce-src', 'code', compiler.context.tagToGlobalOptions, compiler.context.dir)));
             langInfoArray.push(...await extractLangInfoArrayFromLangsURLs(await getGlobalURLs('langs-src', 'code', compiler.context.tagToGlobalOptions, compiler.context.dir)));
             langInfoArray.push({
