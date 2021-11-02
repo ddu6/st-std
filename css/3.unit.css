@@ -106,12 +106,9 @@ div.unit>.caption:first-child>.tag {
 .unit.theorem {
     background-color: var(--color-pre);
     border-left: var(--color-variable) solid 1px;
-    box-sizing: border-box;
-    display: table;
     margin: var(--length-gap) 0;
     padding: var(--length-gap);
     padding-left: var(--length-padding);
-    width: 100%;
 }
 
 .unit.definition {
@@ -140,11 +137,5 @@ div.unit>.caption:first-child>.tag {
 .unit.title {
     font-size: var(--length-font-title);
     margin: var(--length-padding) 0;
-    text-align: center;
-}
-
-/* warn */
-.unit.warn {
-    color: var(--color-warn);
     text-align: center;
 }
