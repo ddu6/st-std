@@ -1,4 +1,23 @@
 import { getGlobalChildren, stdnToPlainString, UnitCompiler } from '@ddu6/stc'
+import {EventEmitter} from 'events'
+const emitter=new EventEmitter()
+let renderToString:Function|undefined
+emitter.once('load',async ()=>{
+    renderToString=(await new Function(`return import('https://cdn.jsdelivr.net/npm/katex@0.15.1/dist/katex.mjs')`)()).default.renderToString
+    emitter.emit('loaded')
+})
+async function getFunction():Promise<Function>{
+    if(renderToString!==undefined){
+        return renderToString
+    }
+    emitter.emit('load')
+    return new Promise(r=>{
+        emitter.on('loaded',()=>{
+            r(<Function>renderToString)
+        })
+    })
+}
+let customCommand:string|undefined
 export const katex:UnitCompiler=async (unit,compiler)=>{
     const element=document.createElement('span')
     const array:string[]=[]
@@ -28,20 +47,15 @@ export const katex:UnitCompiler=async (unit,compiler)=>{
         }
         string=`\\begin{${env}}${string}\\end{${env}}`
     }
-    let customCommand=<string|undefined>compiler.context.variables['katex.customCommand']
     if(customCommand===undefined){
-        const customCommandSTDN=getGlobalChildren('katex',compiler.context.tagToGlobalOptions)
-        if(customCommandSTDN.length>0){
-            customCommand=compiler.context.variables['katex.customCommand']=stdnToPlainString(customCommandSTDN)
-        }else{
-            customCommand=''
-        }
+        customCommand=stdnToPlainString(getGlobalChildren('katex',compiler.context.tagToGlobalOptions))
     }
     if(customCommand.length>0){
         if(string.trimStart().startsWith("'")){
-            customCommand+='\\\\'
+            string=`${customCommand}\\\\\n${string}`
+        }else{
+            string=`${customCommand}\n${string}`
         }
-        string=customCommand+'\n'+string
     }
     const displayMode=unit.options.display===true
     ||unit.tag==='align'
@@ -52,12 +66,10 @@ export const katex:UnitCompiler=async (unit,compiler)=>{
         element.classList.add('display')
     }
     ;(async ()=>{
-        let renderToString=<Function|undefined>compiler.context.variables['katex.renderToString']
-        if(renderToString===undefined){
-            renderToString=compiler.context.variables['katex.renderToString']=<Function>(await new Function(`return import('https://cdn.jsdelivr.net/npm/katex@0.15.1/dist/katex.mjs')`)()).default.renderToString
-        }
-        element.innerHTML=renderToString(string,{
+        element.innerHTML=(await getFunction())(string,{
             displayMode,
+            errorColor:'var(--color-warn)',
+            // globalGroup:true,
             output:'html',
             strict:false,
             throwOnError:false,
