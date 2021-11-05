@@ -14,7 +14,7 @@ export const index = async (unit, compiler) => {
     const block = unit.options.block === true;
     const reverse = unit.options.reverse === true;
     if (block) {
-        element = new Div();
+        element = new Div(['capitalize']);
         df = await compiler.compileSTDN(unit.children);
     }
     else {

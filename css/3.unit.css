@@ -3,7 +3,7 @@
     content: " ";
 }
 
-div.unit>.caption:first-child>.tag {
+.unit.capitalize>.caption:first-child>.tag {
     text-transform: capitalize;
 }
 
@@ -98,7 +98,11 @@ div.unit>.caption:first-child>.tag {
     font-weight: bold;
 }
 
-.unit.proof>.content>div:last-child>.qed {
+.unit.proof.no-qed>.content>div:last-child>.qed {
+    display: none;
+}
+
+.unit.qed {
     float: right;
 }
 
@@ -122,10 +126,6 @@ div.unit>.caption:first-child>.tag {
 .unit.theorem>.caption>.tag,
 .unit.theorem>.caption>.mark {
     font-weight: bold;
-}
-
-.unit.remark>.caption>.tag,
-.unit.remark>.caption>.mark {
     font-style: italic;
 }
 

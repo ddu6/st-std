@@ -2,6 +2,6 @@
     white-space: pre-wrap;
 }
 
-.st-line:not(.vanished):empty::before {
+.st-line:empty::before {
     content: " ";
 }

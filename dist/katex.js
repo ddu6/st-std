@@ -64,25 +64,22 @@ export const katex = async (unit, compiler) => {
     if (displayMode) {
         element.classList.add('display');
     }
-    ;
-    (async () => {
-        element.innerHTML = (await getFunction())(string, {
-            displayMode,
-            errorColor: 'var(--color-warn)',
-            // globalGroup:true,
-            output: 'html',
-            strict: false,
-            throwOnError: false,
-            trust: true,
-        });
-        for (let i = 0; i < eles.length; i++) {
-            const tmp = element.querySelector(`.tmpPlaceholder${i}`);
-            if (tmp === null) {
-                continue;
-            }
-            tmp.replaceWith(eles[i]);
+    element.innerHTML = (await getFunction())(string, {
+        displayMode,
+        errorColor: 'var(--color-warn)',
+        // globalGroup:true,
+        output: 'html',
+        strict: false,
+        throwOnError: false,
+        trust: true,
+    });
+    for (let i = 0; i < eles.length; i++) {
+        const tmp = element.querySelector(`.tmpPlaceholder${i}`);
+        if (tmp === null) {
+            continue;
         }
-    })().catch(console.log);
+        tmp.replaceWith(eles[i]);
+    }
     return element;
 };
 export const align = katex;

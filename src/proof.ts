@@ -1,5 +1,12 @@
 import { UnitCompiler } from '@ddu6/stc'
 import { Div, Span } from 'stce'
+export const qed:UnitCompiler=async (unit,compiler)=>{
+    return await compiler.compileUnit({
+        tag:'katex',
+        options:{class:'qed'},
+        children:['\\square'.split('')]
+    })
+}
 export const proof:UnitCompiler=async (unit,compiler)=>{
     const tagEle=new Span(['tag']).setText('proof')
     const markEle=new Span(['mark'])
@@ -10,7 +17,7 @@ export const proof:UnitCompiler=async (unit,compiler)=>{
     .append(descEle)
     const content=new Span(['content'])
     .append(await compiler.compileSTDN(unit.children))
-    const element=new Div()
+    const element=new Div(['capitalize'])
     .append(caption)
     .append(content)
     const {mark,desc}=unit.options
@@ -28,13 +35,13 @@ export const proof:UnitCompiler=async (unit,compiler)=>{
     }else if(typeof desc==='number'){
         descEle.setText(desc.toString())
     }
-    const qed=await compiler.compileUnit({tag:'katex',options:{class:'qed'},children:['\\square'.split('')]})
+    const qedEle=await qed(unit,compiler)
     if(content.children.length===0){
         content.append(
-            new Div().append(qed)
+            new Div(['st-line']).append(qedEle)
         )
     }else{
-        content.children[content.children.length-1].append(qed)
+        content.children[content.children.length-1].append(qedEle)
     }
     return element.element
 }
