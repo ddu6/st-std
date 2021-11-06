@@ -1,5 +1,5 @@
 import { Compiler, UnitCompiler } from '@ddu6/stc'
-import {Anchor, Span} from 'stce'
+import {Span} from 'stce'
 import {replaceAnchors} from './common'
 export const ref:UnitCompiler=async (unit,compiler)=>{
     const id=unit.options['ref-id']
@@ -15,7 +15,14 @@ export const ref:UnitCompiler=async (unit,compiler)=>{
         .replace(/^heading$/,'section')
         .replace(/^equation$/,'eq')
     )
-    const markEle=new Anchor('#'+encodeURIComponent(id),['mark'],'')
+    const markEle=await compiler.compileUnit({
+        tag:'a',
+        options:{
+            href:'#'+encodeURIComponent(id),
+            class:'mark'
+        },
+        children:[]
+    })
     const descEle=new Span(['desc'])
     const element=new Span().append(
         new Span(['caption'])
@@ -30,11 +37,11 @@ export const ref:UnitCompiler=async (unit,compiler)=>{
         if(Array.isArray(mark)){
             markEle.append(replaceAnchors(await compiler.compileInlineSTDN(mark)))
         }else if(typeof mark==='string'){
-            markEle.setText(mark)
+            markEle.textContent=mark
         }else if(typeof mark==='number'){
-            markEle.setText(mark.toString())
+            markEle.textContent=mark.toString()
         }else{
-            markEle.setText(indexInfo.index.join('.'))
+            markEle.textContent=indexInfo.index.join('.')
         }
     }
     const {desc}=unit.options
