@@ -49,7 +49,7 @@ async function getHighlighter(context:Context):Promise<Highlighter>{
     }
     emitter.emit('load',context)
     return new Promise(r=>{
-        emitter.on('loaded',()=>{
+        emitter.once('loaded',()=>{
             r(<Highlighter>highlighter)
         })
     })

@@ -43,7 +43,7 @@ async function getHighlighter(context) {
     }
     emitter.emit('load', context);
     return new Promise(r => {
-        emitter.on('loaded', () => {
+        emitter.once('loaded', () => {
             r(highlighter);
         });
     });

@@ -12,7 +12,7 @@ async function getFunction():Promise<Function>{
     }
     emitter.emit('load')
     return new Promise(r=>{
-        emitter.on('loaded',()=>{
+        emitter.once('loaded',()=>{
             r(<Function>renderToString)
         })
     })
