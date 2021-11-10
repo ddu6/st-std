@@ -1,4 +1,4 @@
-import { UnitCompiler } from "@ddu6/stc";
+import { UnitCompiler } from '@ddu6/stc';
 export declare const index: UnitCompiler;
 export declare const heading: UnitCompiler;
 export declare const equation: UnitCompiler;

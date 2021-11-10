@@ -1,9 +1,9 @@
-import { Compiler } from "@ddu6/stc";
-import { Div, Span } from "stce";
+import { Compiler } from '@ddu6/stc';
+import { Div, Span } from 'stce';
 export const index = async (unit, compiler) => {
-    const { id } = unit.options;
-    if (typeof id !== 'string' || id.length === 0) {
-        return Compiler.createErrorElement('Id required');
+    const id = compiler.context.unitToId.get(unit);
+    if (id === undefined) {
+        return Compiler.createErrorElement('Error');
     }
     const indexInfo = compiler.context.idToIndexInfo[id];
     if (indexInfo === undefined) {

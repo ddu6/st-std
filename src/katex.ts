@@ -1,4 +1,4 @@
-import { getGlobalChildren, stdnToPlainString, UnitCompiler } from '@ddu6/stc'
+import {getGlobalChildren,stdnToPlainString,UnitCompiler} from '@ddu6/stc'
 import {EventEmitter} from 'events'
 const emitter=new EventEmitter()
 let renderToString:Function|undefined

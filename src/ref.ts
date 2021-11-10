@@ -1,4 +1,4 @@
-import { Compiler, UnitCompiler } from '@ddu6/stc'
+import {Compiler,UnitCompiler} from '@ddu6/stc'
 import {Span} from 'stce'
 import {replaceAnchors} from './common'
 export const ref:UnitCompiler=async (unit,compiler)=>{

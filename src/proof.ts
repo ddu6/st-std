@@ -1,5 +1,5 @@
-import { UnitCompiler } from '@ddu6/stc'
-import { Div, Span } from 'stce'
+import {UnitCompiler} from '@ddu6/stc'
+import {Div,Span} from 'stce'
 export const qed:UnitCompiler=async (unit,compiler)=>{
     return await compiler.compileUnit({
         tag:'katex',
