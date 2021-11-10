@@ -16,7 +16,7 @@ export const proof = async (unit, compiler) => {
         .append(descEle);
     const content = new Span(['content'])
         .append(await compiler.compileSTDN(unit.children));
-    const element = new Div(['capitalize'])
+    const element = new Div(['capitalize-tag'])
         .append(caption)
         .append(content);
     const { mark, desc } = unit.options;
