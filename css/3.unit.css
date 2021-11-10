@@ -94,7 +94,6 @@
 
 .unit.proof>.caption>.tag,
 .unit.proof>.caption>.mark {
-    font-style: italic;
     font-weight: bold;
 }
 
@@ -126,7 +125,6 @@
 .unit.theorem>.caption>.tag,
 .unit.theorem>.caption>.mark {
     font-weight: bold;
-    font-style: italic;
 }
 
 .unit.theorem:not(.definition):not(.remark)>.content {

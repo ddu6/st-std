@@ -3,7 +3,8 @@ import {Div,Span} from 'stce'
 function gen(options:{
     inline?:true
     reverse?:true
-    style?:'theorem'|'definition'|'remark'
+    theorem?:true
+    style?:'definition'|'remark'
 }={}):UnitCompiler{
     return async (unit,compiler)=>{
         const id=compiler.context.unitToId.get(unit)
@@ -63,8 +64,11 @@ function gen(options:{
         }else if(typeof desc==='number'){
             descEle.setText(desc.toString())
         }
-        if(options.style!==undefined){
-            element.classList.add(options.style)
+        if(options.theorem){
+            element.classList.add('theorem')
+            if(options.style!==undefined){
+                element.classList.add(options.style)
+            }
         }
         return element.element
     }
@@ -72,9 +76,9 @@ function gen(options:{
 export const index=gen({inline:true})
 export const heading=gen()
 export const equation=gen({reverse:true})
-export const theorem=gen({style:'theorem'})
-export const definition=gen({style:'definition'})
-export const remark=gen({style:'remark'})
+export const theorem=gen({theorem:true})
+export const definition=gen({theorem:true,style:'definition'})
+export const remark=gen({theorem:true,style:'remark'})
 export const figure=equation
 export const conjecture=theorem
 export const corollary=theorem
