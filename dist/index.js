@@ -1,4 +1,4 @@
-import { Compiler } from '@ddu6/stc';
+import { Compiler, getLastGlobalOption } from '@ddu6/stc';
 import { Div, Span } from 'stce';
 function gen(options = {}) {
     return async (unit, compiler) => {
@@ -12,27 +12,32 @@ function gen(options = {}) {
         }
         let element;
         let df;
-        const block = !options.inline || unit.options.block === true;
-        const reverse = options.reverse || unit.options.reverse === true;
-        if (block) {
-            element = new Div(['capitalize']);
+        const block = unit.options.block === true || getLastGlobalOption('block', unit.tag, compiler.context.tagToGlobalOptions) === true;
+        if (!options.inline || block) {
+            element = new Div();
             df = await compiler.compileSTDN(unit.children);
         }
         else {
             element = new Span();
             df = await compiler.compileInlineSTDN(unit.children);
         }
+        if (!options.noCapitalize || block) {
+            element.classList.add('capitalize-tag');
+        }
+        if (options.noTag) {
+            element.classList.add('no-tag');
+        }
         const tagEle = new Span(['tag']).setText(indexInfo.orbit
             .replace(/^heading$/, 'section')
             .replace(/^equation$/, 'eq'));
         const markEle = new Span(['mark']);
         const descEle = new Span(['desc']);
-        const caption = new Span(['caption'])
+        const caption = (options.reverse ? new Div(['caption']) : new Span(['caption']))
             .append(tagEle)
             .append(markEle)
             .append(descEle);
         const content = new Span(['content']).append(df);
-        if (reverse) {
+        if (options.reverse) {
             element
                 .append(content)
                 .append(caption);
@@ -74,16 +79,16 @@ function gen(options = {}) {
     };
 }
 export const index = gen({ inline: true });
-export const heading = gen();
-export const equation = gen({ reverse: true });
+export const figure = gen({ reverse: true });
+export const equation = gen({ reverse: true, noCapitalize: true });
+export const heading = gen({ noTag: true });
 export const theorem = gen({ theorem: true });
-export const definition = gen({ theorem: true, style: 'definition' });
-export const remark = gen({ theorem: true, style: 'remark' });
-export const figure = equation;
 export const conjecture = theorem;
 export const corollary = theorem;
 export const lemma = theorem;
 export const proposition = theorem;
+export const definition = gen({ theorem: true, style: 'definition' });
 export const notation = definition;
+export const remark = gen({ theorem: true, style: 'remark' });
 export const example = remark;
 export const exercise = remark;

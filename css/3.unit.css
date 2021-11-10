@@ -3,11 +3,11 @@
     content: " ";
 }
 
-.unit.capitalize>.caption:first-child>.tag {
+.unit.capitalize-tag>.caption>.tag {
     text-transform: capitalize;
 }
 
-.unit.plain>.caption>.tag {
+.unit.no-tag>.caption>.tag {
     display: none;
 }
 
@@ -64,27 +64,13 @@
 }
 
 .unit.figure>.caption {
-    display: block;
     margin: var(--length-space) 0;
-}
-
-.unit.figure>.caption>.tag {
-    font-weight: bold;
-    text-transform: capitalize;
-}
-
-.unit.figure>.caption>.mark {
-    font-weight: bold;
 }
 
 /* heading */
 .unit.heading {
     font-size: var(--length-font-heading);
     margin: var(--length-gap) 0;
-}
-
-.unit.heading>.caption>.tag {
-    display: none;
 }
 
 /* proof */
@@ -94,7 +80,7 @@
 
 .unit.proof>.caption>.tag,
 .unit.proof>.caption>.mark {
-    font-weight: bold;
+    font-style: italic;
 }
 
 .unit.proof.no-qed>.content>div:last-child>.qed {
@@ -120,11 +106,6 @@
 
 .unit.remark {
     border-left-color: var(--color-comment);
-}
-
-.unit.theorem>.caption>.tag,
-.unit.theorem>.caption>.mark {
-    font-weight: bold;
 }
 
 .unit.theorem:not(.definition):not(.remark)>.content {
