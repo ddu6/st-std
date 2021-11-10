@@ -17,7 +17,7 @@ const shell=new Shell('Test','',css)
 document.body.append(customStyle)
 ;(async()=>{
     const result=await compile(example,'',{
-        dftTagToUnitCompiler:tagToUnitCompiler
+        builtInTagToUnitCompiler:tagToUnitCompiler
     })
     if(result===undefined){
         return
