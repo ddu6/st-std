@@ -26,7 +26,7 @@
     "webpack-cli": "^4.9.1"
   },
   "dependencies": {
-    "@ddu6/stc": "^0.3.6",
+    "@ddu6/stc": "^0.3.7",
     "stce": "^0.0.8",
     "sthl": "^0.2.2"
   },

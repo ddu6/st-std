@@ -20,14 +20,14 @@ function gen(options:{
         let element:Span|Div
         let df:DocumentFragment
         const block=unit.options.block===true||getLastGlobalOption('block',unit.tag,compiler.context.tagToGlobalOptions)===true
-        if(!options.inline||block){
+        if(block||!options.inline){
             element=new Div()
             df=await compiler.compileSTDN(unit.children)
         }else{
             element=new Span()
             df=await compiler.compileInlineSTDN(unit.children)
         }
-        if(!options.noCapitalize||block){
+        if(block||!options.noCapitalize){
             element.classList.add('capitalize-tag')
         }
         if(options.noTag){
@@ -80,7 +80,7 @@ function gen(options:{
         return element.element
     }
 }
-export const index=gen({inline:true})
+export const index=gen({inline:true,noCapitalize:true})
 export const figure=gen({reverse:true})
 export const equation=gen({reverse:true,noCapitalize:true})
 export const heading=gen({noTag:true})
