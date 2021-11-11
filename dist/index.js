@@ -27,7 +27,7 @@ function gen(options = {}) {
         if (options.noTag) {
             element.classList.add('no-tag');
         }
-        const tagEle = new Span(['tag']).setText(indexInfo.orbit
+        const tagEle = new Span(['tag']).setText(unit.tag
             .replace(/^heading$/, 'section')
             .replace(/^equation$/, 'eq'));
         const markEle = new Span(['mark']);

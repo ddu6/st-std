@@ -11,7 +11,7 @@ export const ref:UnitCompiler=async (unit,compiler)=>{
         return Compiler.createErrorElement('?')
     }
     const tagEle=new Span(['tag']).setText(
-        indexInfo.orbit
+        indexInfo.unit.tag
         .replace(/^heading$/,'section')
         .replace(/^equation$/,'eq')
     )

@@ -34,7 +34,7 @@ function gen(options:{
             element.classList.add('no-tag')
         }
         const tagEle=new Span(['tag']).setText(
-            indexInfo.orbit
+            unit.tag
             .replace(/^heading$/,'section')
             .replace(/^equation$/,'eq')
         )
