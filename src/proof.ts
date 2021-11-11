@@ -8,7 +8,7 @@ export const qed:UnitCompiler=async (unit,compiler)=>{
     })
 }
 export const proof:UnitCompiler=async (unit,compiler)=>{
-    const tagEle=new Span(['tag']).setText('proof')
+    const tagEle=new Span(['tag']).setText(unit.tag)
     const markEle=new Span(['mark'])
     const descEle=new Span(['desc'])
     const caption=new Span(['caption'])

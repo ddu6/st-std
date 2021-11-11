@@ -7,7 +7,7 @@ export const qed = async (unit, compiler) => {
     });
 };
 export const proof = async (unit, compiler) => {
-    const tagEle = new Span(['tag']).setText('proof');
+    const tagEle = new Span(['tag']).setText(unit.tag);
     const markEle = new Span(['mark']);
     const descEle = new Span(['desc']);
     const caption = new Span(['caption'])
