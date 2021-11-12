@@ -1,11 +1,14 @@
 module.exports = {
-    entry: './dist/mod.js',
+    entry: {
+        ucs: './dist/ucs.js',
+        mod: './dist/mod.js'
+    },
     mode: 'production',
     experiments: {
         outputModule: true
     },
     output: {
-        filename: 'mod.js',
+        filename: '[name].js',
         path: __dirname,
         library: {
             type: 'module'
