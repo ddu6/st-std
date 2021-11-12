@@ -1,6 +1,6 @@
-import {css,headCSS,tagToUnitCompiler} from '../dist/mod'
-import {compile} from '@ddu6/stc'
-import {Shell} from '@ddu6/stui'
+import {css,headCSS,tagToUnitCompiler} from '../mod.js'
+import {compile} from 'https://cdn.jsdelivr.net/npm/@ddu6/stc/mod.js'
+import {Shell} from 'https://cdn.jsdelivr.net/npm/@ddu6/stui/mod.js'
 const headStyle=document.createElement('style')
 const customStyle=document.createElement('style')
 headStyle.textContent=headCSS
