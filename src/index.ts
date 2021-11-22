@@ -34,9 +34,9 @@ function gen(options:{
             element.classList.add('no-tag')
         }
         const tagEle=new Span(['tag']).setText(
-            unit.tag
-            .replace(/^heading$/,'section')
-            .replace(/^equation$/,'eq')
+            unit.tag==='heading'?'section'
+                :unit.tag==='equation'?'eq'
+                :unit.tag
         )
         const markEle=new Span(['mark'])
         const descEle=new Span(['desc'])

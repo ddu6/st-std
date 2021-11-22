@@ -10,9 +10,9 @@ export const ref = async (unit, compiler) => {
     if (indexInfo === undefined) {
         return Compiler.createErrorElement('?');
     }
-    const tagEle = new Span(['tag']).setText(indexInfo.unit.tag
-        .replace(/^heading$/, 'section')
-        .replace(/^equation$/, 'eq'));
+    const tagEle = new Span(['tag']).setText(indexInfo.unit.tag === 'heading' ? 'section'
+        : indexInfo.unit.tag === 'equation' ? 'eq'
+            : indexInfo.unit.tag);
     const markEle = await compiler.compileUnit({
         tag: 'a',
         options: {
