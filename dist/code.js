@@ -52,10 +52,10 @@ export const code = async (unit, compiler) => {
     let text = stdnToPlainString(unit.children);
     const element = Highlighter.textToPlainElement(text, unit.options.block === true);
     let { lang } = unit.options;
-    if (typeof lang !== 'string' || lang.length === 0) {
-        lang = 'non';
+    if (typeof lang !== 'string') {
+        lang = '';
     }
-    if (lang === 'non') {
+    if (lang.length === 0) {
         return element;
     }
     ;
