@@ -1,4 +1,4 @@
-import {getGlobalStrings,getGlobalURLs,stdnToPlainString,UnitCompiler,Context} from '@ddu6/stc'
+import {getGlobalStrings,getGlobalURLs,unitToPlainString,UnitCompiler,Context} from '@ddu6/stc'
 import {extractLangInfoArrayFromLangsURLs, extractLangInfoArrayFromVSCEURLs, extractThemeFromThemeURLs, extractThemeFromVSCT, extractThemeFromVSCTURLs, Highlighter} from 'sthl'
 import {vsct} from './vsct'
 import {EventEmitter} from 'events'
@@ -55,7 +55,7 @@ async function getHighlighter(context:Context):Promise<Highlighter>{
     })
 }
 export const code:UnitCompiler=async (unit,compiler)=>{
-    let text=stdnToPlainString(unit.children)
+    let text=unitToPlainString(unit)
     const element=Highlighter.textToPlainElement(text,unit.options.block===true)
     let {lang}=unit.options
     if(typeof lang!=='string'){

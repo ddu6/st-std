@@ -1,4 +1,4 @@
-import { getGlobalStrings, getGlobalURLs, stdnToPlainString } from '@ddu6/stc';
+import { getGlobalStrings, getGlobalURLs, unitToPlainString } from '@ddu6/stc';
 import { extractLangInfoArrayFromLangsURLs, extractLangInfoArrayFromVSCEURLs, extractThemeFromThemeURLs, extractThemeFromVSCT, extractThemeFromVSCTURLs, Highlighter } from 'sthl';
 import { vsct } from './vsct';
 import { EventEmitter } from 'events';
@@ -49,7 +49,7 @@ async function getHighlighter(context) {
     });
 }
 export const code = async (unit, compiler) => {
-    let text = stdnToPlainString(unit.children);
+    let text = unitToPlainString(unit);
     const element = Highlighter.textToPlainElement(text, unit.options.block === true);
     let { lang } = unit.options;
     if (typeof lang !== 'string') {
