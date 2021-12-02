@@ -1,0 +1,14 @@
+export declare const index: import("@ddu6/stc").UnitCompiler;
+export declare const figure: import("@ddu6/stc").UnitCompiler;
+export declare const equation: import("@ddu6/stc").UnitCompiler;
+export declare const heading: import("@ddu6/stc").UnitCompiler;
+export declare const theorem: import("@ddu6/stc").UnitCompiler;
+export declare const conjecture: import("@ddu6/stc").UnitCompiler;
+export declare const corollary: import("@ddu6/stc").UnitCompiler;
+export declare const lemma: import("@ddu6/stc").UnitCompiler;
+export declare const proposition: import("@ddu6/stc").UnitCompiler;
+export declare const definition: import("@ddu6/stc").UnitCompiler;
+export declare const notation: import("@ddu6/stc").UnitCompiler;
+export declare const remark: import("@ddu6/stc").UnitCompiler;
+export declare const example: import("@ddu6/stc").UnitCompiler;
+export declare const exercise: import("@ddu6/stc").UnitCompiler;
