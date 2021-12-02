@@ -5,9 +5,9 @@ const headStyle=document.createElement('style')
 const customStyle=document.createElement('style')
 headStyle.textContent=headCSS
 const shell=window.shell=new Shell('Test','',css)
-document.body.append(headStyle)
-document.body.append(shell.styleEle)
-document.body.append(customStyle)
+document.head.append(headStyle)
+document.head.append(shell.styleEle)
+document.head.append(customStyle)
 document.body.append(shell.element)
 ;(async()=>{
     const result=await compile(await (await window.fetch('./main.stdn')).text(),'',{
