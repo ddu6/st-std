@@ -1,7 +1,6 @@
 .katex {
     font-size: 1em;
     line-height: var(--number-ratio-line);
-    white-space: pre;
 }
 
 .katex-display {
