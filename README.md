@@ -9,24 +9,21 @@ const example=`{id flt, mark FLT, desc Fermat, theorem [
 ]}
 ['The first successful proof of '{ref-id flt, ref []}' was released in 1994 by Andrew Wiles.']
 {style height:100vh}`
+const shell=window.shell=new Shell('Test','',css)
 const headStyle=document.createElement('style')
 const customStyle=document.createElement('style')
 headStyle.textContent=headCSS
-const shell=window.shell=new Shell('Test','',css)
 document.head.append(headStyle)
 document.head.append(shell.styleEle)
 document.head.append(customStyle)
 document.body.append(shell.element)
 ;(async()=>{
     const result=await compile(example,'',{
-        builtInTagToUnitCompiler:tagToUnitCompiler
+        builtInTagToUnitCompiler:tagToUnitCompiler,
+        style:customStyle
     })
-    if(result===undefined){
-        return
+    if(result!==undefined){
+        shell.append(result.documentFragment)
     }
-    const {documentFragment,context}=result
-    customStyle.textContent=context.css
-    shell.append(documentFragment)
-    console.log(context)
 })()
 ```
