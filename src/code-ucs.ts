@@ -2,9 +2,22 @@ import {getGlobalStrings,getGlobalURLs,unitToPlainString,UnitCompiler,Context} f
 import {extractLangInfoArrayFromLangsURLs, extractLangInfoArrayFromVSCEURLs, extractThemeFromThemeURLs, extractThemeFromVSCT, extractThemeFromVSCTURLs, Highlighter} from 'sthl'
 import {vsct} from './vsct'
 import {EventEmitter} from 'events'
-const emitter=new EventEmitter()
-let highlighter:Highlighter|undefined
-emitter.once('load',async (context:Context)=>{
+const contextToHighlighter=new Map<Context,Highlighter|EventEmitter|undefined>()
+async function getHighlighter(context:Context):Promise<Highlighter>{
+    let highlighter=contextToHighlighter.get(context)
+    if(highlighter instanceof Highlighter){
+        return highlighter
+    }
+    if(highlighter!==undefined){
+        const emitter=highlighter
+        return new Promise(r=>{
+            emitter.once('loaded',()=>{
+                r(<Highlighter>contextToHighlighter.get(context))
+            })
+        })
+    }
+    const emitter=new EventEmitter()
+    contextToHighlighter.set(context,emitter)
     const langInfoArray=await extractLangInfoArrayFromVSCEURLs(
         [
             'css',
@@ -40,19 +53,9 @@ emitter.once('load',async (context:Context)=>{
     const theme=extractThemeFromVSCT(vsct)
     theme.push(...await extractThemeFromVSCTURLs(await getGlobalURLs('vsct-src','code',context.tagToGlobalOptions,context.dir)))
     theme.push(...await extractThemeFromThemeURLs(await getGlobalURLs('theme-src','code',context.tagToGlobalOptions,context.dir)))
-    highlighter=new Highlighter(langInfoArray,theme)
+    contextToHighlighter.set(context,highlighter=new Highlighter(langInfoArray,theme))
     emitter.emit('loaded')
-})
-async function getHighlighter(context:Context):Promise<Highlighter>{
-    if(highlighter!==undefined){
-        return highlighter
-    }
-    emitter.emit('load',context)
-    return new Promise(r=>{
-        emitter.once('loaded',()=>{
-            r(<Highlighter>highlighter)
-        })
-    })
+    return highlighter
 }
 export const code:UnitCompiler=async (unit,compiler)=>{
     let text=unitToPlainString(unit)

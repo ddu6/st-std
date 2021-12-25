@@ -17,7 +17,7 @@ async function getFunction() {
         });
     });
 }
-let customCommand;
+const contextToCustomCommand = new Map();
 export function gen(options = {}) {
     return async (unit, compiler) => {
         const element = document.createElement('span');
@@ -43,8 +43,9 @@ export function gen(options = {}) {
             }
             string = `\\begin{${env}}${string}\\end{${env}}`;
         }
+        let customCommand = contextToCustomCommand.get(compiler.context);
         if (customCommand === undefined) {
-            customCommand = stdnToPlainString(getGlobalChildren('katex', compiler.context.tagToGlobalOptions));
+            contextToCustomCommand.set(compiler.context, customCommand = stdnToPlainString(getGlobalChildren('katex', compiler.context.tagToGlobalOptions)));
         }
         if (customCommand.length > 0) {
             if (string.trimStart().startsWith("'")) {

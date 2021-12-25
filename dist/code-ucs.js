@@ -2,9 +2,22 @@ import { getGlobalStrings, getGlobalURLs, unitToPlainString } from '@ddu6/stc';
 import { extractLangInfoArrayFromLangsURLs, extractLangInfoArrayFromVSCEURLs, extractThemeFromThemeURLs, extractThemeFromVSCT, extractThemeFromVSCTURLs, Highlighter } from 'sthl';
 import { vsct } from './vsct';
 import { EventEmitter } from 'events';
-const emitter = new EventEmitter();
-let highlighter;
-emitter.once('load', async (context) => {
+const contextToHighlighter = new Map();
+async function getHighlighter(context) {
+    let highlighter = contextToHighlighter.get(context);
+    if (highlighter instanceof Highlighter) {
+        return highlighter;
+    }
+    if (highlighter !== undefined) {
+        const emitter = highlighter;
+        return new Promise(r => {
+            emitter.once('loaded', () => {
+                r(contextToHighlighter.get(context));
+            });
+        });
+    }
+    const emitter = new EventEmitter();
+    contextToHighlighter.set(context, emitter);
     const langInfoArray = await extractLangInfoArrayFromVSCEURLs([
         'css',
         'html',
@@ -34,19 +47,9 @@ emitter.once('load', async (context) => {
     const theme = extractThemeFromVSCT(vsct);
     theme.push(...await extractThemeFromVSCTURLs(await getGlobalURLs('vsct-src', 'code', context.tagToGlobalOptions, context.dir)));
     theme.push(...await extractThemeFromThemeURLs(await getGlobalURLs('theme-src', 'code', context.tagToGlobalOptions, context.dir)));
-    highlighter = new Highlighter(langInfoArray, theme);
+    contextToHighlighter.set(context, highlighter = new Highlighter(langInfoArray, theme));
     emitter.emit('loaded');
-});
-async function getHighlighter(context) {
-    if (highlighter !== undefined) {
-        return highlighter;
-    }
-    emitter.emit('load', context);
-    return new Promise(r => {
-        emitter.once('loaded', () => {
-            r(highlighter);
-        });
-    });
+    return highlighter;
 }
 export const code = async (unit, compiler) => {
     let text = unitToPlainString(unit);
