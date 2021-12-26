@@ -1,20 +1,18 @@
-import {Compiler,UnitCompiler} from '@ddu6/stc'
-import {Span} from 'stce'
+import {UnitCompiler} from '@ddu6/stc'
 import {replaceAnchors} from './common'
 export const ref:UnitCompiler=async (unit,compiler)=>{
     const id=unit.options['ref-id']
     if(typeof id!=='string'||id.length===0){
-        return Compiler.createErrorElement('Ref id required')
+        return compiler.createErrorElement('Ref id required')
     }
     const indexInfo=compiler.context.idToIndexInfo[id]
     if(indexInfo===undefined){
-        return Compiler.createErrorElement('?')
+        return compiler.createErrorElement('?')
     }
-    const tagEle=new Span(['tag']).setText(
-        indexInfo.unit.tag==='heading'?'section'
-            :indexInfo.unit.tag==='equation'?'eq'
-            :indexInfo.unit.tag
-    )
+    
+    const element=document.createElement('span')
+    const caption=document.createElement('span')
+    const tagEle=document.createElement('span')
     const markEle=await compiler.compileUnit({
         tag:'a',
         options:{
@@ -23,13 +21,17 @@ export const ref:UnitCompiler=async (unit,compiler)=>{
         },
         children:[]
     })
-    const descEle=new Span(['desc'])
-    const element=new Span().append(
-        new Span(['caption'])
-        .append(tagEle)
-        .append(markEle)
-        .append(descEle)
-    )
+    const descEle=document.createElement('span')
+    caption.classList.add('caption')
+    tagEle.classList.add('tag')
+    tagEle.textContent=indexInfo.unit.tag==='heading'?'section'
+        :indexInfo.unit.tag==='equation'?'eq'
+        :indexInfo.unit.tag
+    descEle.classList.add('desc')
+    element.append(caption)
+    caption.append(tagEle)
+    caption.append(markEle)
+    caption.append(descEle)
     if(unit.children.length>0){
         markEle.append(replaceAnchors(await compiler.compileInlineSTDN(unit.children)))
     }else{
@@ -48,9 +50,9 @@ export const ref:UnitCompiler=async (unit,compiler)=>{
     if(Array.isArray(desc)){
         descEle.append(await compiler.compileInlineSTDN(desc))
     }else if(typeof desc==='string'){
-        descEle.setText(desc)
+        descEle.textContent=desc
     }else if(typeof desc==='number'){
-        descEle.setText(desc.toString())
+        descEle.textContent=desc.toString()
     }
-    return element.element
+    return element
 }

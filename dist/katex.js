@@ -1,4 +1,3 @@
-import { getGlobalChildren, stdnToPlainString } from '@ddu6/stc';
 import { EventEmitter } from 'events';
 const emitter = new EventEmitter();
 let renderToString;
@@ -17,7 +16,7 @@ async function getFunction() {
         });
     });
 }
-const contextToCustomCommand = new Map();
+const compilerToCustomCommand = new Map();
 export function gen(options = {}) {
     return async (unit, compiler) => {
         const element = document.createElement('span');
@@ -43,9 +42,9 @@ export function gen(options = {}) {
             }
             string = `\\begin{${env}}${string}\\end{${env}}`;
         }
-        let customCommand = contextToCustomCommand.get(compiler.context);
+        let customCommand = compilerToCustomCommand.get(compiler);
         if (customCommand === undefined) {
-            contextToCustomCommand.set(compiler.context, customCommand = stdnToPlainString(getGlobalChildren('katex', compiler.context.tagToGlobalOptions)));
+            compilerToCustomCommand.set(compiler, customCommand = compiler.base.stdnToPlainString(compiler.extractor.extractGlobalChildren('katex', compiler.context.tagToGlobalOptions)));
         }
         if (customCommand.length > 0) {
             if (string.trimStart().startsWith("'")) {

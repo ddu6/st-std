@@ -1,4 +1,3 @@
-import { Div, Span } from 'stce';
 export const qed = async (unit, compiler) => {
     return await compiler.compileUnit({
         tag: 'katex',
@@ -7,43 +6,55 @@ export const qed = async (unit, compiler) => {
     });
 };
 export const proof = async (unit, compiler) => {
-    const tagEle = new Span(['tag']).setText(unit.tag);
-    const markEle = new Span(['mark']);
-    const descEle = new Span(['desc']);
-    const caption = new Span(['caption'])
-        .append(tagEle)
-        .append(markEle)
-        .append(descEle);
-    const content = new Span(['content'])
-        .append(await compiler.compileSTDN(unit.children));
-    const element = new Div(['capitalize-tag'])
-        .append(caption)
-        .append(content);
+    const element = document.createElement('div');
+    const caption = document.createElement('span');
+    const content = document.createElement('span');
+    const tagEle = document.createElement('span');
+    const markEle = document.createElement('span');
+    const descEle = document.createElement('span');
+    element.classList.add('capitalize-tag');
+    content.classList.add('content');
+    caption.classList.add('caption');
+    tagEle.classList.add('tag');
+    tagEle.textContent = unit.tag === 'heading' ? 'section'
+        : unit.tag === 'equation' ? 'eq'
+            : unit.tag;
+    markEle.classList.add('mark');
+    descEle.classList.add('desc');
+    element.append(caption);
+    element.append(content);
+    caption.append(tagEle);
+    caption.append(markEle);
+    caption.append(descEle);
+    content.append(await compiler.compileSTDN(unit.children));
     const { mark, desc } = unit.options;
     if (Array.isArray(mark)) {
         markEle.append(await compiler.compileInlineSTDN(mark));
     }
     else if (typeof mark === 'string') {
-        markEle.setText(mark);
+        markEle.textContent = mark;
     }
     else if (typeof mark === 'number') {
-        markEle.setText(mark.toString());
+        markEle.textContent = mark.toString();
     }
     if (Array.isArray(desc)) {
         descEle.append(await compiler.compileInlineSTDN(desc));
     }
     else if (typeof desc === 'string') {
-        descEle.setText(desc);
+        descEle.textContent = desc;
     }
     else if (typeof desc === 'number') {
-        descEle.setText(desc.toString());
+        descEle.textContent = desc.toString();
     }
     const qedEle = await qed(unit, compiler);
     if (content.children.length === 0) {
-        content.append(new Div(['st-line']).append(qedEle));
+        const div = document.createElement('div');
+        div.classList.add('st-line');
+        content.append(div);
+        div.append(qedEle);
     }
     else {
         content.children[content.children.length - 1].append(qedEle);
     }
-    return element.element;
+    return element;
 };

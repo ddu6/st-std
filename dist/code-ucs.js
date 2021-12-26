@@ -1,10 +1,9 @@
-import { getGlobalStrings, getGlobalURLs, unitToPlainString } from '@ddu6/stc';
-import { extractLangInfoArrayFromLangsURLs, extractLangInfoArrayFromVSCEURLs, extractThemeFromThemeURLs, extractThemeFromVSCT, extractThemeFromVSCTURLs, Highlighter } from 'sthl';
+import { extractLangInfoArrayFromLangsURLs, extractLangInfoArrayFromVSCEURLs, extractThemeFromThemeURLs, extractThemeFromVSCT, extractThemeFromVSCTURLs, Highlighter, textToPlainDocumentFragment, textToPlainElement } from 'sthl';
 import { vsct } from './vsct';
 import { EventEmitter } from 'events';
-const contextToHighlighter = new Map();
-async function getHighlighter(context) {
-    let highlighter = contextToHighlighter.get(context);
+const compilerToHighlighter = new Map();
+async function getHighlighter(compiler) {
+    let highlighter = compilerToHighlighter.get(compiler);
     if (highlighter instanceof Highlighter) {
         return highlighter;
     }
@@ -12,28 +11,28 @@ async function getHighlighter(context) {
         const emitter = highlighter;
         return new Promise(r => {
             emitter.once('loaded', () => {
-                r(contextToHighlighter.get(context));
+                r(compilerToHighlighter.get(compiler));
             });
         });
     }
     const emitter = new EventEmitter();
-    contextToHighlighter.set(context, emitter);
+    compilerToHighlighter.set(compiler, emitter);
     const langInfoArray = await extractLangInfoArrayFromVSCEURLs([
         'css',
         'html',
         'json',
         'markdown-basics',
     ]
-        .concat(getGlobalStrings('vsce', 'code', context.tagToGlobalOptions))
+        .concat(compiler.extractor.extractGlobalStrings('vsce', 'code', compiler.context.tagToGlobalOptions))
         .map(val => `${val}/package.json`), 'https://cdn.jsdelivr.net/gh/microsoft/vscode/extensions/');
     langInfoArray.push(...await extractLangInfoArrayFromVSCEURLs([
         'st-org/st-lang',
         'microsoft/vscode-typescript-next',
     ]
-        .concat(getGlobalStrings('vsce-gh', 'code', context.tagToGlobalOptions))
+        .concat(compiler.extractor.extractGlobalStrings('vsce-gh', 'code', compiler.context.tagToGlobalOptions))
         .map(val => `${val}/package.json`), 'https://cdn.jsdelivr.net/gh/'));
-    langInfoArray.push(...await extractLangInfoArrayFromVSCEURLs(await getGlobalURLs('vsce-src', 'code', context.tagToGlobalOptions, context.dir)));
-    langInfoArray.push(...await extractLangInfoArrayFromLangsURLs(await getGlobalURLs('langs-src', 'code', context.tagToGlobalOptions, context.dir)));
+    langInfoArray.push(...await extractLangInfoArrayFromVSCEURLs(await compiler.extractor.extractGlobalURLs('vsce-src', 'code', compiler.context.tagToGlobalOptions, compiler.context.dir)));
+    langInfoArray.push(...await extractLangInfoArrayFromLangsURLs(await compiler.extractor.extractGlobalURLs('langs-src', 'code', compiler.context.tagToGlobalOptions, compiler.context.dir)));
     langInfoArray.push({
         name: 'markdown',
         alias: ['md']
@@ -45,15 +44,15 @@ async function getHighlighter(context) {
         alias: ['ts']
     });
     const theme = extractThemeFromVSCT(vsct);
-    theme.push(...await extractThemeFromVSCTURLs(await getGlobalURLs('vsct-src', 'code', context.tagToGlobalOptions, context.dir)));
-    theme.push(...await extractThemeFromThemeURLs(await getGlobalURLs('theme-src', 'code', context.tagToGlobalOptions, context.dir)));
-    contextToHighlighter.set(context, highlighter = new Highlighter(langInfoArray, theme));
+    theme.push(...await extractThemeFromVSCTURLs(await compiler.extractor.extractGlobalURLs('vsct-src', 'code', compiler.context.tagToGlobalOptions, compiler.context.dir)));
+    theme.push(...await extractThemeFromThemeURLs(await compiler.extractor.extractGlobalURLs('theme-src', 'code', compiler.context.tagToGlobalOptions, compiler.context.dir)));
+    compilerToHighlighter.set(compiler, highlighter = new Highlighter(langInfoArray, theme));
     emitter.emit('loaded');
     return highlighter;
 }
 export const code = async (unit, compiler) => {
-    let text = unitToPlainString(unit);
-    const element = Highlighter.textToPlainElement(text, unit.options.block === true);
+    let text = compiler.base.unitToPlainString(unit);
+    const element = textToPlainElement(text, unit.options.block === true);
     let { lang } = unit.options;
     if (typeof lang !== 'string') {
         lang = '';
@@ -68,7 +67,7 @@ export const code = async (unit, compiler) => {
             try {
                 const res = await fetch(new URL(src, compiler.context.dir).href);
                 if (res.ok) {
-                    const df = Highlighter.textToPlainDocumentFragment(text = await res.text());
+                    const df = textToPlainDocumentFragment(text = await res.text());
                     element.innerHTML = '';
                     element.append(df);
                 }
@@ -77,7 +76,7 @@ export const code = async (unit, compiler) => {
                 console.log(err);
             }
         }
-        const df = await (await getHighlighter(compiler.context)).highlightToDocumentFragment(text, lang);
+        const df = await (await getHighlighter(compiler)).highlightToDocumentFragment(text, lang);
         element.innerHTML = '';
         element.append(df);
     })().catch(console.log);

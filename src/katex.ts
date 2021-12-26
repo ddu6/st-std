@@ -1,6 +1,5 @@
-import {getGlobalChildren,stdnToPlainString,UnitCompiler} from '@ddu6/stc'
+import {Compiler,UnitCompiler} from '@ddu6/stc'
 import {EventEmitter} from 'events'
-import { Context } from 'vm'
 const emitter=new EventEmitter()
 let renderToString:Function|undefined
 emitter.once('load',async ()=>{
@@ -18,7 +17,7 @@ async function getFunction():Promise<Function>{
         })
     })
 }
-const contextToCustomCommand=new Map<Context,string|undefined>()
+const compilerToCustomCommand=new Map<Compiler,string|undefined>()
 export function gen(options:{
     noEnv?:true
     addStar?:true
@@ -48,9 +47,9 @@ export function gen(options:{
             }
             string=`\\begin{${env}}${string}\\end{${env}}`
         }
-        let customCommand=contextToCustomCommand.get(compiler.context)
+        let customCommand=compilerToCustomCommand.get(compiler)
         if(customCommand===undefined){
-            contextToCustomCommand.set(compiler.context,customCommand=stdnToPlainString(getGlobalChildren('katex',compiler.context.tagToGlobalOptions)))
+            compilerToCustomCommand.set(compiler,customCommand=compiler.base.stdnToPlainString(compiler.extractor.extractGlobalChildren('katex',compiler.context.tagToGlobalOptions)))
         }
         if(customCommand.length>0){
             if(string.trimStart().startsWith("'")){
