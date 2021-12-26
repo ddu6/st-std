@@ -1,4 +1,4 @@
-import {UnitCompiler} from '@ddu6/stc'
+import type {UnitCompiler} from '@ddu6/stc'
 import {prettyTag} from './common'
 export function gen(options:{
     inline?:true

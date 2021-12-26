@@ -1,4 +1,4 @@
-import { UnitCompiler } from '@ddu6/stc';
+import type { UnitCompiler } from '@ddu6/stc';
 export declare function gen(options?: {
     inline?: true;
     reverse?: true;

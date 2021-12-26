@@ -1,4 +1,4 @@
-import {Compiler,UnitCompiler} from '@ddu6/stc'
+import type {Compiler,UnitCompiler} from '@ddu6/stc'
 import {extractLangInfoArrayFromLangsURLs,extractLangInfoArrayFromVSCEURLs,extractThemeFromThemeURLs,extractThemeFromVSCT,extractThemeFromVSCTURLs,Highlighter,textToPlainDocumentFragment,textToPlainElement} from 'sthl'
 import {vsct} from './vsct'
 import {EventEmitter} from 'events'

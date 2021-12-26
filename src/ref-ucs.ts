@@ -1,4 +1,4 @@
-import {UnitCompiler} from '@ddu6/stc'
+import type {UnitCompiler} from '@ddu6/stc'
 import {prettyTag,replaceAnchors} from './common'
 export const ref:UnitCompiler=async (unit,compiler)=>{
     const id=unit.options['ref-id']

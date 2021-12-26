@@ -1,4 +1,4 @@
-import {Compiler,UnitCompiler} from '@ddu6/stc'
+import type {Compiler,UnitCompiler} from '@ddu6/stc'
 import {EventEmitter} from 'events'
 const emitter=new EventEmitter()
 let renderToString:Function|undefined

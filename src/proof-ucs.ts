@@ -1,4 +1,4 @@
-import {UnitCompiler} from '@ddu6/stc'
+import type {UnitCompiler} from '@ddu6/stc'
 import {prettyTag} from './common'
 export const qed:UnitCompiler=async (unit,compiler)=>{
     return await compiler.compileUnit({
