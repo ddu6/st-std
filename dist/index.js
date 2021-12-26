@@ -1,3 +1,4 @@
+import { prettyTag } from './common';
 export function gen(options = {}) {
     return async (unit, compiler) => {
         const id = compiler.context.unitToId.get(unit);
@@ -17,9 +18,7 @@ export function gen(options = {}) {
         caption.classList.add('caption');
         content.classList.add('content');
         tagEle.classList.add('tag');
-        tagEle.textContent = unit.tag === 'heading' ? 'section'
-            : unit.tag === 'equation' ? 'eq'
-                : unit.tag;
+        tagEle.textContent = prettyTag(unit.tag);
         markEle.classList.add('mark');
         descEle.classList.add('desc');
         const block = unit.options.block === true || compiler.extractor.extractLastGlobalOption('block', unit.tag, compiler.context.tagToGlobalOptions) === true;

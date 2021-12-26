@@ -28,3 +28,6 @@ export function replaceAnchors(fragment:DocumentFragment){
     }
     return fragment
 }
+export function prettyTag(tag:string){
+    return tag==='heading'?'section':tag==='equation'?'eq':tag
+}

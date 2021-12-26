@@ -1,5 +1,5 @@
 import {UnitCompiler} from '@ddu6/stc'
-import {replaceAnchors} from './common'
+import {prettyTag,replaceAnchors} from './common'
 export const ref:UnitCompiler=async (unit,compiler)=>{
     const id=unit.options['ref-id']
     if(typeof id!=='string'||id.length===0){
@@ -9,7 +9,6 @@ export const ref:UnitCompiler=async (unit,compiler)=>{
     if(indexInfo===undefined){
         return compiler.createErrorElement('?')
     }
-    
     const element=document.createElement('span')
     const caption=document.createElement('span')
     const tagEle=document.createElement('span')
@@ -24,9 +23,7 @@ export const ref:UnitCompiler=async (unit,compiler)=>{
     const descEle=document.createElement('span')
     caption.classList.add('caption')
     tagEle.classList.add('tag')
-    tagEle.textContent=indexInfo.unit.tag==='heading'?'section'
-        :indexInfo.unit.tag==='equation'?'eq'
-        :indexInfo.unit.tag
+    tagEle.textContent=prettyTag(indexInfo.unit.tag)
     descEle.classList.add('desc')
     element.append(caption)
     caption.append(tagEle)

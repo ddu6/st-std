@@ -1,4 +1,5 @@
 import {UnitCompiler} from '@ddu6/stc'
+import {prettyTag} from './common'
 export const qed:UnitCompiler=async (unit,compiler)=>{
     return await compiler.compileUnit({
         tag:'katex',
@@ -14,12 +15,10 @@ export const proof:UnitCompiler=async (unit,compiler)=>{
     const markEle=document.createElement('span')
     const descEle=document.createElement('span')
     element.classList.add('capitalize-tag')
-    content.classList.add('content')
     caption.classList.add('caption')
+    content.classList.add('content')
     tagEle.classList.add('tag')
-    tagEle.textContent=unit.tag==='heading'?'section'
-        :unit.tag==='equation'?'eq'
-        :unit.tag
+    tagEle.textContent=prettyTag(unit.tag)
     markEle.classList.add('mark')
     descEle.classList.add('desc')
     element.append(caption)

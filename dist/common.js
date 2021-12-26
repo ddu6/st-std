@@ -29,3 +29,6 @@ export function replaceAnchors(fragment) {
     }
     return fragment;
 }
+export function prettyTag(tag) {
+    return tag === 'heading' ? 'section' : tag === 'equation' ? 'eq' : tag;
+}
