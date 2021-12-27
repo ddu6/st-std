@@ -1,6 +1,5 @@
 import { extractLangInfoArrayFromLangsURLs, extractLangInfoArrayFromVSCEURLs, extractThemeFromThemeURLs, extractThemeFromVSCT, extractThemeFromVSCTURLs, Highlighter, textToPlainDocumentFragment, textToPlainElement } from 'sthl';
 import { vsct } from './vsct';
-import { EventEmitter } from 'events';
 const compilerToHighlighter = new Map();
 async function getHighlighter(compiler) {
     let highlighter = compilerToHighlighter.get(compiler);
@@ -8,15 +7,15 @@ async function getHighlighter(compiler) {
         return highlighter;
     }
     if (highlighter !== undefined) {
-        const emitter = highlighter;
+        const target = highlighter;
         return new Promise(r => {
-            emitter.once('loaded', () => {
+            target.addEventListener('loaded', () => {
                 r(compilerToHighlighter.get(compiler));
             });
         });
     }
-    const emitter = new EventEmitter();
-    compilerToHighlighter.set(compiler, emitter);
+    const target = new EventTarget();
+    compilerToHighlighter.set(compiler, target);
     const langInfoArray = await extractLangInfoArrayFromVSCEURLs([
         'css',
         'html',
@@ -47,7 +46,7 @@ async function getHighlighter(compiler) {
     theme.push(...await extractThemeFromVSCTURLs(await compiler.extractor.extractGlobalURLs('vsct-src', 'code', compiler.context.tagToGlobalOptions, compiler.context.dir)));
     theme.push(...await extractThemeFromThemeURLs(await compiler.extractor.extractGlobalURLs('theme-src', 'code', compiler.context.tagToGlobalOptions, compiler.context.dir)));
     compilerToHighlighter.set(compiler, highlighter = new Highlighter(langInfoArray, theme));
-    emitter.emit('loaded');
+    target.dispatchEvent(new Event('loaded'));
     return highlighter;
 }
 export const code = async (unit, compiler) => {

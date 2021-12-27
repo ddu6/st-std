@@ -1,23 +1,22 @@
 import type {Compiler,UnitCompiler} from '@ddu6/stc'
 import {extractLangInfoArrayFromLangsURLs,extractLangInfoArrayFromVSCEURLs,extractThemeFromThemeURLs,extractThemeFromVSCT,extractThemeFromVSCTURLs,Highlighter,textToPlainDocumentFragment,textToPlainElement} from 'sthl'
 import {vsct} from './vsct'
-import {EventEmitter} from 'events'
-const compilerToHighlighter=new Map<Compiler,Highlighter|EventEmitter|undefined>()
+const compilerToHighlighter=new Map<Compiler,Highlighter|EventTarget|undefined>()
 async function getHighlighter(compiler:Compiler):Promise<Highlighter>{
     let highlighter=compilerToHighlighter.get(compiler)
     if(highlighter instanceof Highlighter){
         return highlighter
     }
     if(highlighter!==undefined){
-        const emitter=highlighter
+        const target=highlighter
         return new Promise(r=>{
-            emitter.once('loaded',()=>{
+            target.addEventListener('loaded',()=>{
                 r(<Highlighter>compilerToHighlighter.get(compiler))
             })
         })
     }
-    const emitter=new EventEmitter()
-    compilerToHighlighter.set(compiler,emitter)
+    const target=new EventTarget()
+    compilerToHighlighter.set(compiler,target)
     const langInfoArray=await extractLangInfoArrayFromVSCEURLs(
         [
             'css',
@@ -54,7 +53,7 @@ async function getHighlighter(compiler:Compiler):Promise<Highlighter>{
     theme.push(...await extractThemeFromVSCTURLs(await compiler.extractor.extractGlobalURLs('vsct-src','code',compiler.context.tagToGlobalOptions,compiler.context.dir)))
     theme.push(...await extractThemeFromThemeURLs(await compiler.extractor.extractGlobalURLs('theme-src','code',compiler.context.tagToGlobalOptions,compiler.context.dir)))
     compilerToHighlighter.set(compiler,highlighter=new Highlighter(langInfoArray,theme))
-    emitter.emit('loaded')
+    target.dispatchEvent(new Event('loaded'))
     return highlighter
 }
 export const code:UnitCompiler=async (unit,compiler)=>{

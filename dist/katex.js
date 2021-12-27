@@ -1,17 +1,16 @@
-import { EventEmitter } from 'events';
-const emitter = new EventEmitter();
+const target = new EventTarget();
 let renderToString;
-emitter.once('load', async () => {
+target.addEventListener('load', async () => {
     renderToString = (await new Function(`return import('https://cdn.jsdelivr.net/npm/katex@0.15.1/dist/katex.mjs')`)()).default.renderToString;
-    emitter.emit('loaded');
-});
+    target.dispatchEvent(new Event('loaded'));
+}, { once: true });
 async function getFunction() {
     if (renderToString !== undefined) {
         return renderToString;
     }
-    emitter.emit('load');
+    target.dispatchEvent(new Event('load'));
     return new Promise(r => {
-        emitter.once('loaded', () => {
+        target.addEventListener('loaded', () => {
             r(renderToString);
         });
     });
