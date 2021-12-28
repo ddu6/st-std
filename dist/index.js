@@ -21,7 +21,7 @@ export function gen(options = {}) {
         tagEle.textContent = prettyTag(unit.tag);
         markEle.classList.add('mark');
         descEle.classList.add('desc');
-        const block = unit.options.block === true || compiler.extractor.extractLastGlobalOption('block', unit.tag, compiler.context.tagToGlobalOptions) === true;
+        const block = (unit.options.block ?? compiler.extractor.extractLastGlobalOption('block', unit.tag, compiler.context.tagToGlobalOptions)) === true;
         if (block || !options.inline) {
             element = document.createElement('div');
             content.append(await compiler.compileSTDN(unit.children));
