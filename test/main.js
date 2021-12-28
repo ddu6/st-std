@@ -1,4 +1,4 @@
-import {compile} from 'https://cdn.jsdelivr.net/gh/st-org/stc@0.12.0/mod.js'
+import {compile} from 'https://cdn.jsdelivr.net/gh/st-org/stc@0.13.0/mod.js'
 import {init} from 'https://cdn.jsdelivr.net/gh/st-org/stui@0.6.0/mod.js'
 import {css,tagToUnitCompiler} from '../mod.js'
 init({css})
