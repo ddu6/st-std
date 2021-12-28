@@ -50,8 +50,9 @@ async function getHighlighter(compiler) {
     return highlighter;
 }
 export const code = async (unit, compiler) => {
+    const forceBlock = unit.options.block === true;
     let text = compiler.base.unitToPlainString(unit);
-    const element = textToPlainElement(text, unit.options.block === true);
+    const element = textToPlainElement(text, forceBlock);
     let { lang } = unit.options;
     if (typeof lang !== 'string') {
         lang = '';
@@ -66,7 +67,7 @@ export const code = async (unit, compiler) => {
             try {
                 const res = await fetch(new URL(src, compiler.context.dir).href);
                 if (res.ok) {
-                    const df = textToPlainDocumentFragment(text = await res.text());
+                    const df = textToPlainDocumentFragment(text = await res.text(), forceBlock);
                     element.innerHTML = '';
                     element.append(df);
                 }
@@ -75,7 +76,7 @@ export const code = async (unit, compiler) => {
                 console.log(err);
             }
         }
-        const df = await (await getHighlighter(compiler)).highlightToDocumentFragment(text, lang);
+        const df = await (await getHighlighter(compiler)).highlightToDocumentFragment(text, lang, forceBlock);
         element.innerHTML = '';
         element.append(df);
     })().catch(console.log);
