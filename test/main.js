@@ -4,7 +4,7 @@ import {css,tagToUnitCompiler} from '../mod.js'
 init({css})
 const style=document.createElement('style')
 document.head.append(style)
-const result=await compile(await (await window.fetch('./main.stdn')).text(),'',{
+const result=await compile(await (await window.fetch('./main.stdn')).text(),'a:b',{
     builtInTagToUnitCompiler:tagToUnitCompiler,
     style
 })
