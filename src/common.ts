@@ -1,4 +1,4 @@
-const avoidAttributes=[
+const anchorAttrsToIgnore=[
     'download',
     'href',
     'hreflang',
@@ -12,7 +12,7 @@ export function replaceAnchors(fragment:DocumentFragment){
     for(const a of fragment.querySelectorAll('a')){
         const span=document.createElement('span')
         for(const {name,value} of a.attributes){
-            if(avoidAttributes.includes(name)){
+            if(anchorAttrsToIgnore.includes(name)){
                 continue
             }
             try{
