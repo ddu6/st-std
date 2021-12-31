@@ -8,6 +8,7 @@ export const qed:UnitCompiler=async (unit,compiler)=>{
     })
 }
 export const proof:UnitCompiler=async (unit,compiler)=>{
+    const {document}=compiler.context.window
     const element=document.createElement('div')
     const caption=document.createElement('span')
     const content=document.createElement('span')

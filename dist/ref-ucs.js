@@ -1,5 +1,6 @@
 import { prettyTag, replaceAnchors } from './common';
 export const ref = async (unit, compiler) => {
+    const { document } = compiler.context.window;
     const id = unit.options['ref-id'];
     if (typeof id !== 'string' || id.length === 0) {
         return compiler.createErrorElement('Ref id required');
@@ -29,12 +30,12 @@ export const ref = async (unit, compiler) => {
     caption.append(markEle);
     caption.append(descEle);
     if (unit.children.length > 0) {
-        markEle.append(replaceAnchors(await compiler.compileInlineSTDN(unit.children)));
+        markEle.append(replaceAnchors(await compiler.compileInlineSTDN(unit.children), document));
     }
     else {
         const { mark } = indexInfo.unit.options;
         if (Array.isArray(mark)) {
-            markEle.append(replaceAnchors(await compiler.compileInlineSTDN(mark)));
+            markEle.append(replaceAnchors(await compiler.compileInlineSTDN(mark), document));
         }
         else if (typeof mark === 'string') {
             markEle.textContent = mark;

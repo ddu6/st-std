@@ -1,6 +1,7 @@
 import { prettyTag } from './common';
 export function gen(options = {}) {
     return async (unit, compiler) => {
+        const { document } = compiler.context.window;
         const id = compiler.context.unitToId.get(unit);
         if (id === undefined) {
             return compiler.createErrorElement('Error');

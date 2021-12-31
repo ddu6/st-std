@@ -9,6 +9,7 @@ export function gen(options:{
     style?:'definition'|'remark'
 }={}):UnitCompiler{
     return async (unit,compiler)=>{
+        const {document}=compiler.context.window
         const id=compiler.context.unitToId.get(unit)
         if(id===undefined){
             return compiler.createErrorElement('Error')

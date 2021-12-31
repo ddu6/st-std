@@ -18,6 +18,7 @@ async function getFunction() {
 const compilerToCustomCommand = new Map();
 export function gen(options = {}) {
     return async (unit, compiler) => {
+        const { document } = compiler.context.window;
         const element = document.createElement('span');
         const array = [];
         const eles = [];

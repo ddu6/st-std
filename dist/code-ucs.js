@@ -1,4 +1,4 @@
-import { extractLangInfoArrayFromLangsURLs, extractLangInfoArrayFromVSCEURLs, extractThemeFromThemeURLs, extractThemeFromVSCT, extractThemeFromVSCTURLs, Highlighter, textToPlainDocumentFragment, textToPlainElement } from 'sthl';
+import { extractLangInfoArrayFromVSCEURLs, extractThemeFromVSCT, extractThemeFromVSCTURLs, Highlighter, textToPlainDocumentFragment, textToPlainElement } from 'sthl';
 import { vsct } from './vsct';
 const compilerToHighlighter = new Map();
 async function getHighlighter(compiler) {
@@ -30,8 +30,7 @@ async function getHighlighter(compiler) {
     ]
         .concat(compiler.extractor.extractGlobalStrings('vsce-gh', 'code', compiler.context.tagToGlobalOptions))
         .map(val => `${val}/package.json`), 'https://cdn.jsdelivr.net/gh/'));
-    langInfoArray.push(...await extractLangInfoArrayFromVSCEURLs(await compiler.extractor.extractGlobalURLs('vsce-src', 'code', compiler.context.tagToGlobalOptions, compiler.context.dir)));
-    langInfoArray.push(...await extractLangInfoArrayFromLangsURLs(await compiler.extractor.extractGlobalURLs('langs-src', 'code', compiler.context.tagToGlobalOptions, compiler.context.dir)));
+    langInfoArray.push(...await extractLangInfoArrayFromVSCEURLs(await compiler.extractor.extractGlobalURLs('vsce-src', 'code', compiler.context.tagToGlobalOptions, compiler.context.dir), 'a:b'));
     langInfoArray.push({
         name: 'markdown',
         alias: ['md']
@@ -43,16 +42,16 @@ async function getHighlighter(compiler) {
         alias: ['ts']
     });
     const theme = extractThemeFromVSCT(vsct);
-    theme.push(...await extractThemeFromVSCTURLs(await compiler.extractor.extractGlobalURLs('vsct-src', 'code', compiler.context.tagToGlobalOptions, compiler.context.dir)));
-    theme.push(...await extractThemeFromThemeURLs(await compiler.extractor.extractGlobalURLs('theme-src', 'code', compiler.context.tagToGlobalOptions, compiler.context.dir)));
+    theme.push(...await extractThemeFromVSCTURLs(await compiler.extractor.extractGlobalURLs('vsct-src', 'code', compiler.context.tagToGlobalOptions, compiler.context.dir), 'a:b'));
     compilerToHighlighter.set(compiler, highlighter = new Highlighter(langInfoArray, theme));
     target.dispatchEvent(new Event('loaded'));
     return highlighter;
 }
 export const code = async (unit, compiler) => {
+    const { document } = compiler.context.window;
     const forceBlock = unit.options.block === true;
     let text = compiler.base.unitToPlainString(unit);
-    const element = textToPlainElement(text, forceBlock);
+    const element = textToPlainElement(text, { forceBlock, document });
     let { lang } = unit.options;
     if (typeof lang !== 'string') {
         lang = '';
@@ -67,7 +66,7 @@ export const code = async (unit, compiler) => {
             try {
                 const res = await fetch(new URL(src, compiler.context.dir).href);
                 if (res.ok) {
-                    const df = textToPlainDocumentFragment(text = await res.text(), forceBlock);
+                    const df = textToPlainDocumentFragment(text = await res.text(), { forceBlock, document });
                     element.innerHTML = '';
                     element.append(df);
                 }
@@ -76,7 +75,7 @@ export const code = async (unit, compiler) => {
                 console.log(err);
             }
         }
-        const df = await (await getHighlighter(compiler)).highlightToDocumentFragment(text, lang, forceBlock);
+        const df = await (await getHighlighter(compiler)).highlightToDocumentFragment(text, lang, { forceBlock, document });
         element.innerHTML = '';
         element.append(df);
     })().catch(console.log);
