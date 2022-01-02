@@ -7,7 +7,6 @@ export const qed = async (unit, compiler) => {
     });
 };
 export const proof = async (unit, compiler) => {
-    const { document } = compiler.context.window;
     const element = document.createElement('div');
     const caption = document.createElement('span');
     const content = document.createElement('span');

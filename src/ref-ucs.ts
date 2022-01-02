@@ -1,7 +1,6 @@
 import type {UnitCompiler} from '@ddu6/stc'
 import {prettyTag,replaceAnchors} from './common'
 export const ref:UnitCompiler=async (unit,compiler)=>{
-    const {document}=compiler.context.window
     const id=unit.options['ref-id']
     if(typeof id!=='string'||id.length===0){
         return compiler.createErrorElement('Ref id required')
@@ -31,11 +30,11 @@ export const ref:UnitCompiler=async (unit,compiler)=>{
     caption.append(markEle)
     caption.append(descEle)
     if(unit.children.length>0){
-        markEle.append(replaceAnchors(await compiler.compileInlineSTDN(unit.children),document))
+        markEle.append(replaceAnchors(await compiler.compileInlineSTDN(unit.children)))
     }else{
         const {mark}=indexInfo.unit.options
         if(Array.isArray(mark)){
-            markEle.append(replaceAnchors(await compiler.compileInlineSTDN(mark),document))
+            markEle.append(replaceAnchors(await compiler.compileInlineSTDN(mark)))
         }else if(typeof mark==='string'){
             markEle.textContent=mark
         }else if(typeof mark==='number'){

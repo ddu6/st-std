@@ -8,7 +8,7 @@ const anchorAttrsToIgnore=[
     'target',
     'type'
 ]
-export function replaceAnchors(fragment:DocumentFragment,document:Document){
+export function replaceAnchors(fragment:DocumentFragment){
     for(const a of fragment.querySelectorAll('a')){
         const span=document.createElement('span')
         for(const {name,value} of a.attributes){

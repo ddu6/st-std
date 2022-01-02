@@ -23,7 +23,6 @@ export function gen(options:{
     display?:true
 }={}):UnitCompiler{
     return async (unit,compiler)=>{
-        const {document}=compiler.context.window
         const element=document.createElement('span')
         const array:string[]=[]
         const eles:(HTMLElement|SVGElement)[]=[]
