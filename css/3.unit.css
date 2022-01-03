@@ -36,19 +36,18 @@
 
 /* equation */
 .unit.equation {
+    align-items: center;
     display: grid;
     grid-template-columns: 1fr auto 1fr;
-    grid-template-rows: 1fr min-content 1fr;
     margin: var(--length-space) 0;
 }
 
 .unit.equation>.content {
-    grid-area: 1/2/span 3/span 1;
+    grid-column-start: 2;
     text-align: center;
 }
 
 .unit.equation>.caption {
-    grid-area: 2/3/span 1/span 1;
     padding-left: var(--length-gap);
     text-align: right;
 }
