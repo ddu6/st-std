@@ -28,7 +28,7 @@ export function gen(options = {}) {
                     string += inline;
                     continue;
                 }
-                string += `\\htmlClass{tmpPlaceholder${eles.length.toString()}}{}`;
+                string += `{\\htmlClass{tmpPlaceholder${eles.length.toString()}}{}}`;
                 eles.push(await compiler.compileUnit(inline));
             }
             array.push(string);
