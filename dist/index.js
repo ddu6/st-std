@@ -18,9 +18,10 @@ export function gen(options = {}) {
         caption.classList.add('caption');
         content.classList.add('content');
         tagEle.classList.add('tag');
-        tagEle.textContent = prettyTag(unit.tag);
         markEle.classList.add('mark');
         descEle.classList.add('desc');
+        const globalTag = compiler.extractor.extractLastGlobalOption('tag', unit.tag, compiler.context.tagToGlobalOptions);
+        tagEle.textContent = prettyTag(typeof globalTag === 'string' ? globalTag : unit.tag);
         const block = (unit.options.block ?? compiler.extractor.extractLastGlobalOption('block', unit.tag, compiler.context.tagToGlobalOptions)) === true;
         if (block || !options.inline) {
             element = document.createElement('div');

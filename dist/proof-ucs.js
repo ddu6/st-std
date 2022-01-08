@@ -17,9 +17,10 @@ export const proof = async (unit, compiler) => {
     caption.classList.add('caption');
     content.classList.add('content');
     tagEle.classList.add('tag');
-    tagEle.textContent = prettyTag(unit.tag);
     markEle.classList.add('mark');
     descEle.classList.add('desc');
+    const globalTag = compiler.extractor.extractLastGlobalOption('tag', unit.tag, compiler.context.tagToGlobalOptions);
+    tagEle.textContent = prettyTag(typeof globalTag === 'string' ? globalTag : unit.tag);
     element.append(caption);
     element.append(content);
     caption.append(tagEle);
