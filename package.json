@@ -19,7 +19,7 @@
   },
   "dependencies": {
     "@ddu6/stc": "^0.19.1",
-    "sthl": "^0.12.2"
+    "sthl": "^0.13.0"
   },
   "engines": {
     "node": ">=14.0.0",
