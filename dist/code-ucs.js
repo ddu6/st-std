@@ -1,7 +1,27 @@
-import { extractLangInfoArrayFromVSCEURLs, extractThemeFromVSCT, extractThemeFromVSCTURLs, Highlighter, textToPlainDocumentFragment, textToPlainElement } from 'sthl';
+import { textToPlainDocumentFragment, textToPlainElement } from 'sthl/dist/base';
 import { vsct } from './vsct';
+const target = new EventTarget();
+let mod;
+target.addEventListener('load', async () => {
+    mod = (await new Function(`return import('https://cdn.jsdelivr.net/gh/st-org/sthl@0.13.0/mod.js')`)());
+    target.dispatchEvent(new Event('loaded'));
+}, { once: true });
+async function getMod() {
+    if (mod !== undefined) {
+        return mod;
+    }
+    target.dispatchEvent(new Event('load'));
+    return new Promise(r => {
+        target.addEventListener('loaded', () => {
+            if (mod !== undefined) {
+                r(mod);
+            }
+        });
+    });
+}
 const compilerToHighlighter = new Map();
 async function getHighlighter(compiler) {
+    const { extractLangInfoArrayFromVSCEURLs, extractThemeFromVSCT, extractThemeFromVSCTURLs, Highlighter } = await getMod();
     let highlighter = compilerToHighlighter.get(compiler);
     if (highlighter instanceof Highlighter) {
         return highlighter;

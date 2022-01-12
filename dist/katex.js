@@ -1,17 +1,19 @@
 const target = new EventTarget();
-let renderToString;
+let func;
 target.addEventListener('load', async () => {
-    renderToString = (await new Function(`return import('https://cdn.jsdelivr.net/npm/katex@0.15.1/dist/katex.mjs')`)()).default.renderToString;
+    func = (await new Function(`return import('https://cdn.jsdelivr.net/npm/katex@0.15.1/dist/katex.mjs')`)()).default.renderToString;
     target.dispatchEvent(new Event('loaded'));
 }, { once: true });
-async function getFunction() {
-    if (renderToString !== undefined) {
-        return renderToString;
+async function getFunc() {
+    if (func !== undefined) {
+        return func;
     }
     target.dispatchEvent(new Event('load'));
     return new Promise(r => {
         target.addEventListener('loaded', () => {
-            r(renderToString);
+            if (func !== undefined) {
+                r(func);
+            }
         });
     });
 }
@@ -57,7 +59,7 @@ export function gen(options = {}) {
         if (displayMode) {
             element.classList.add('display');
         }
-        element.innerHTML = (await getFunction())(string, {
+        element.innerHTML = (await getFunc())(string, {
             displayMode,
             errorColor: 'var(--color-warn)',
             // globalGroup:true,

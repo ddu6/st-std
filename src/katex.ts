@@ -1,18 +1,21 @@
 import type {Compiler, UnitCompiler} from '@ddu6/stc'
+import type {renderToString} from 'katex'
 const target = new EventTarget()
-let renderToString: Function | undefined
+let func: typeof renderToString | undefined
 target.addEventListener('load', async () => {
-    renderToString = (await new Function(`return import('https://cdn.jsdelivr.net/npm/katex@0.15.1/dist/katex.mjs')`)()).default.renderToString
+    func = (await new Function(`return import('https://cdn.jsdelivr.net/npm/katex@0.15.1/dist/katex.mjs')`)()).default.renderToString
     target.dispatchEvent(new Event('loaded'))
 }, {once: true})
-async function getFunction(): Promise<Function> {
-    if (renderToString !== undefined) {
-        return renderToString
+async function getFunc(): Promise<typeof renderToString> {
+    if (func !== undefined) {
+        return func
     }
     target.dispatchEvent(new Event('load'))
     return new Promise(r => {
         target.addEventListener('loaded', () => {
-            r(<Function>renderToString)
+            if (func !== undefined) {
+                r(func)
+            }
         })
     })
 }
@@ -61,10 +64,10 @@ export function gen(options: {
         if (displayMode) {
             element.classList.add('display')
         }
-        element.innerHTML = (await getFunction())(string, {
+        element.innerHTML = (await getFunc())(string, {
             displayMode,
             errorColor: 'var(--color-warn)',
-            // globalGroup:true,
+            // globalGroup: true,
             output: 'html',
             strict: false,
             throwOnError: false,

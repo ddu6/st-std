@@ -1,7 +1,0 @@
-.st-line {
-    white-space: pre-wrap;
-}
-
-.st-line:empty::before {
-    content: " ";
-}
