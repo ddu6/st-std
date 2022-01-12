@@ -62,7 +62,7 @@ export function gen(options = {}) {
         element.innerHTML = (await getFunc())(string, {
             displayMode,
             errorColor: 'var(--color-warn)',
-            // globalGroup:true,
+            // globalGroup: true,
             output: 'html',
             strict: false,
             throwOnError: false,
