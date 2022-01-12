@@ -1,22 +1,4 @@
-const target = new EventTarget();
-let func;
-target.addEventListener('load', async () => {
-    func = (await new Function(`return import('https://cdn.jsdelivr.net/npm/katex@0.15.1/dist/katex.mjs')`)()).default.renderToString;
-    target.dispatchEvent(new Event('loaded'));
-}, { once: true });
-async function getFunc() {
-    if (func !== undefined) {
-        return func;
-    }
-    target.dispatchEvent(new Event('load'));
-    return new Promise(r => {
-        target.addEventListener('loaded', () => {
-            if (func !== undefined) {
-                r(func);
-            }
-        });
-    });
-}
+import { getMod } from './import';
 const compilerToCustomCommand = new Map();
 export function gen(options = {}) {
     return async (unit, compiler) => {
@@ -59,7 +41,7 @@ export function gen(options = {}) {
         if (displayMode) {
             element.classList.add('display');
         }
-        element.innerHTML = (await getFunc())(string, {
+        element.innerHTML = ((await getMod('katex')).default.renderToString)(string, {
             displayMode,
             errorColor: 'var(--color-warn)',
             // globalGroup: true,

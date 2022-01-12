@@ -1,30 +1,11 @@
 import type {Compiler, UnitCompiler} from '@ddu6/stc'
-import type * as sthl from 'sthl'
 import type {Highlighter} from 'sthl'
 import {textToPlainDocumentFragment, textToPlainElement} from 'sthl/dist/base'
+import {getMod} from './import'
 import {vsct} from './vsct'
-const target = new EventTarget()
-let mod: typeof sthl | undefined
-target.addEventListener('load', async () => {
-    mod = await new Function(`return import('https://cdn.jsdelivr.net/gh/st-org/sthl@0.13.0/mod.js')`)()
-    target.dispatchEvent(new Event('loaded'))
-}, {once: true})
-async function getMod(): Promise<typeof sthl> {
-    if (mod !== undefined) {
-        return mod
-    }
-    target.dispatchEvent(new Event('load'))
-    return new Promise(r => {
-        target.addEventListener('loaded', () => {
-            if (mod !== undefined) {
-                r(mod)
-            }
-        })
-    })
-}
 const compilerToHighlighter = new Map<Compiler, Highlighter | EventTarget | undefined>()
 async function getHighlighter(compiler: Compiler): Promise<Highlighter> {
-    const {extractLangInfoArrayFromVSCEURLs, extractThemeFromVSCT, extractThemeFromVSCTURLs, Highlighter} = await getMod()
+    const {extractLangInfoArrayFromVSCEURLs, extractThemeFromVSCT, extractThemeFromVSCTURLs, Highlighter} = await getMod('sthl')
     let highlighter = compilerToHighlighter.get(compiler)
     if (highlighter instanceof Highlighter) {
         return highlighter
