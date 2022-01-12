@@ -6,7 +6,7 @@ import {vsct} from './vsct'
 const target = new EventTarget()
 let mod: typeof sthl | undefined
 target.addEventListener('load', async () => {
-    mod = (await new Function(`return import('https://cdn.jsdelivr.net/gh/st-org/sthl@0.13.0/mod.js')`)())
+    mod = await new Function(`return import('https://cdn.jsdelivr.net/gh/st-org/sthl@0.13.0/mod.js')`)()
     target.dispatchEvent(new Event('loaded'))
 }, {once: true})
 async function getMod(): Promise<typeof sthl> {
