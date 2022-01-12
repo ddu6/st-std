@@ -74,6 +74,7 @@ export const code: UnitCompiler = async (unit, compiler) => {
                     const df = textToPlainDocumentFragment(text = await res.text(), forceBlock)
                     element.innerHTML = ''
                     element.append(df)
+                    element.dispatchEvent(new Event('adjust', {bubbles: true}))
                 }
             } catch (err) {
                 console.log(err)
