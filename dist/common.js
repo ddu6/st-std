@@ -32,3 +32,18 @@ export function replaceAnchors(fragment) {
 export function prettyTag(tag) {
     return tag === 'heading' ? 'section' : tag === 'equation' ? 'eq' : tag;
 }
+export function getScale(element) {
+    const fontSize = Number(getComputedStyle(element).fontSize.slice(0, -2));
+    let heightScale = 1 / fontSize;
+    let widthScale = 1 / fontSize;
+    const fo = element.closest('foreignObject');
+    if (fo !== null) {
+        const { height, width } = fo.getBoundingClientRect();
+        heightScale *= fo.height.animVal.value / height;
+        widthScale *= fo.width.animVal.value / width;
+    }
+    return {
+        heightScale,
+        widthScale
+    };
+}

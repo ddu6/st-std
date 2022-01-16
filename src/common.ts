@@ -31,3 +31,18 @@ export function replaceAnchors(fragment: DocumentFragment) {
 export function prettyTag(tag: string) {
     return tag === 'heading' ? 'section' : tag === 'equation' ? 'eq' : tag
 }
+export function getScale(element: Element) {
+    const fontSize = Number(getComputedStyle(element).fontSize.slice(0, -2))
+    let heightScale = 1 / fontSize
+    let widthScale = 1 / fontSize
+    const fo = element.closest('foreignObject')
+    if (fo !== null) {
+        const {height, width} = fo.getBoundingClientRect()
+        heightScale *= fo.height.animVal.value / height
+        widthScale *= fo.width.animVal.value / width
+    }
+    return {
+        heightScale,
+        widthScale
+    }
+}
