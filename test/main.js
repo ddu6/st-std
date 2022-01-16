@@ -1,13 +1,15 @@
-import {compile} from 'https://cdn.jsdelivr.net/gh/st-org/stc@0.19.1/mod.js'
-import {init} from 'https://cdn.jsdelivr.net/gh/st-org/stui@0.13.0/mod.js'
+import {compile} from 'https://cdn.jsdelivr.net/gh/st-org/stc@0.19.2/mod.js'
+import {createASStruct, init} from 'https://cdn.jsdelivr.net/gh/st-org/stui@0.15.0/mod.js'
 import * as tagToUnitCompiler from '../ucs.js'
 init()
 const style = document.createElement('style')
+const struct = createASStruct()
 document.head.append(style)
+document.body.append(struct.element)
 const result = await compile(await (await fetch('./main.stdn')).text(), location.href, {
     builtInTagToUnitCompiler: tagToUnitCompiler,
     style
 })
 if (result !== undefined) {
-    document.body.append(result.documentFragment)
+    struct.article.append(result.documentFragment)
 }
