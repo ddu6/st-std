@@ -22,7 +22,8 @@ export const ref = async (unit, compiler) => {
     const descEle = document.createElement('span');
     caption.classList.add('caption');
     tagEle.classList.add('tag');
-    tagEle.textContent = prettyTag(indexInfo.unit.tag);
+    const globalTag = compiler.extractor.extractLastGlobalOption('tag', indexInfo.unit.tag, compiler.context.tagToGlobalOptions);
+    tagEle.textContent = prettyTag(typeof globalTag === 'string' ? globalTag : indexInfo.unit.tag);
     descEle.classList.add('desc');
     element.append(caption);
     caption.append(tagEle);
