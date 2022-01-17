@@ -27,12 +27,14 @@ export function observeFirstConnect(listener, element, containerOrRoot) {
     observer.observe(container, { childList: true, subtree: true });
 }
 export function observeAdjustments(adjust, element, containerOrRoot) {
+    let taskNum = 0;
     const generator = (async function* () {
         while (true) {
             while (!await adjust()) {
                 await new Promise(r => setTimeout(r, 1000));
             }
             element.dispatchEvent(new Event('adjust', { bubbles: true, composed: true }));
+            taskNum--;
             yield;
         }
     })();
@@ -40,9 +42,13 @@ export function observeAdjustments(adjust, element, containerOrRoot) {
         element.addEventListener('adjust', async (e) => {
             if (e.eventPhase === e.BUBBLING_PHASE) {
                 e.stopPropagation();
-                await generator.next();
+                if (taskNum < 2) {
+                    taskNum++;
+                    await generator.next();
+                }
             }
         });
+        taskNum++;
         await generator.next();
     }, element, containerOrRoot);
 }
