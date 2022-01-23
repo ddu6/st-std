@@ -67,7 +67,7 @@ export function gen(options: {
                     continue
                 }
                 elementPositions.push(strings.length)
-                strings.push(`{\\htmlClass{tmpPlaceholder${elements.length}}{}}`)
+                strings.push(`{\\htmlClass{unit-container}{\\htmlClass{tmpPlaceholder${elements.length}}{}}}`)
                 elements.push(createMeasurableElement(await compiler.compileUnit(inline)))
             }
             strings.push('\n')
@@ -104,7 +104,7 @@ export function gen(options: {
                         continue
                     }
                     const {top, bottom} = measureElement(element, heightScale, widthScale)
-                    strings[elementPositions[i]] = `{\\raisebox{${top}em}{}\\raisebox{${-bottom}em}{}\\htmlClass{tmpPlaceholder${i}}{}}`
+                    strings[elementPositions[i]] = `{\\raisebox{${top}em}{}\\raisebox{${-bottom}em}{}\\htmlClass{unit-container}{\\htmlClass{tmpPlaceholder${i}}{}}}`
                 }
                 await renderStrings()
                 return true
