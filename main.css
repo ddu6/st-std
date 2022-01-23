@@ -89,7 +89,7 @@
     line-height: var(--number-ratio-line);
 }
 
-.unit.katex .unit-container {
+.katex .unit-container {
     font-family: var(--font);
 }
 
