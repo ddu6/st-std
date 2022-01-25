@@ -25,14 +25,14 @@ async function getHighlighter(compiler) {
         'markdown-basics',
     ]
         .concat(compiler.extractor.extractGlobalStrings('vsce', 'code', compiler.context.tagToGlobalOptions))
-        .map(val => `${val}/package.json`), 'https://cdn.jsdelivr.net/gh/microsoft/vscode/extensions/');
+        .map(value => `${value}/package.json`), 'https://cdn.jsdelivr.net/gh/microsoft/vscode/extensions/');
     langInfoArray.push(...await extractLangInfoArrayFromVSCEURLs([
         'st-org/st-lang',
         'microsoft/vscode-typescript-next',
     ]
         .concat(compiler.extractor.extractGlobalStrings('vsce-gh', 'code', compiler.context.tagToGlobalOptions))
-        .map(val => `${val}/package.json`), 'https://cdn.jsdelivr.net/gh/'));
-    langInfoArray.push(...await extractLangInfoArrayFromVSCEURLs(await compiler.extractor.extractGlobalURLs('vsce-src', 'code', compiler.context.tagToGlobalOptions, compiler.context.dir), 'a:b'));
+        .map(value => `${value}/package.json`), 'https://cdn.jsdelivr.net/gh/'));
+    langInfoArray.push(...await extractLangInfoArrayFromVSCEURLs(await compiler.extractor.extractGlobalURLs('vsce-src', 'code', compiler.context.tagToGlobalOptions), 'a:b'));
     langInfoArray.push({
         name: 'markdown',
         alias: ['md']
@@ -44,7 +44,7 @@ async function getHighlighter(compiler) {
         alias: ['ts']
     });
     const theme = extractThemeFromVSCT(vsct);
-    theme.push(...await extractThemeFromVSCTURLs(await compiler.extractor.extractGlobalURLs('vsct-src', 'code', compiler.context.tagToGlobalOptions, compiler.context.dir), 'a:b'));
+    theme.push(...await extractThemeFromVSCTURLs(await compiler.extractor.extractGlobalURLs('vsct-src', 'code', compiler.context.tagToGlobalOptions), 'a:b'));
     compilerToHighlighter.set(compiler, highlighter = new Highlighter(langInfoArray, theme));
     target.dispatchEvent(new Event('loaded'));
     return highlighter;
@@ -65,7 +65,7 @@ export const code = async (unit, compiler) => {
         const { src } = unit.options;
         if (typeof src === 'string') {
             try {
-                const res = await fetch(new URL(src, compiler.context.dir).href);
+                const res = await fetch(compiler.context.urlToAbsURL(src, unit));
                 if (res.ok) {
                     const df = textToPlainDocumentFragment(text = await res.text(), forceBlock);
                     element.innerHTML = '';

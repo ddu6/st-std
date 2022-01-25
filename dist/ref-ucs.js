@@ -11,20 +11,15 @@ export const ref = async (unit, compiler) => {
     const element = document.createElement('span');
     const caption = document.createElement('span');
     const tagEle = document.createElement('span');
-    const markEle = await compiler.compileUnit({
-        tag: 'a',
-        options: {
-            href: '#' + encodeURIComponent(id),
-            class: 'mark'
-        },
-        children: []
-    });
+    const markEle = document.createElement('a');
     const descEle = document.createElement('span');
     caption.classList.add('caption');
     tagEle.classList.add('tag');
+    markEle.classList.add('mark');
+    markEle.href = `#${encodeURIComponent(id)}`;
+    descEle.classList.add('desc');
     const globalTag = compiler.extractor.extractLastGlobalOption('tag', indexInfo.unit.tag, compiler.context.tagToGlobalOptions);
     tagEle.textContent = prettyTag(typeof globalTag === 'string' ? globalTag : indexInfo.unit.tag);
-    descEle.classList.add('desc');
     element.append(caption);
     caption.append(tagEle);
     caption.append(markEle);
