@@ -1,10 +1,10 @@
 import type { UnitCompiler } from '@ddu6/stc';
-interface MeasurableElement {
+export declare function createMeasurableElement(content: Node): {
     element: HTMLDivElement;
     baselineBlock: HTMLDivElement;
     container: HTMLDivElement;
-}
-export declare function createMeasurableElement(content: Node): MeasurableElement;
+};
+declare type MeasurableElement = ReturnType<typeof createMeasurableElement>;
 export declare function measureElement(element: MeasurableElement, heightScale: number, widthScale: number): {
     height: number;
     width: number;

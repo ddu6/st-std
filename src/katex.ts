@@ -2,12 +2,7 @@ import type {Compiler, UnitCompiler} from '@ddu6/stc'
 import {getMod} from './import'
 import {getScale} from './common'
 import {observeAdjustments} from './observe'
-interface MeasurableElement {
-    element: HTMLDivElement
-    baselineBlock: HTMLDivElement
-    container: HTMLDivElement
-}
-export function createMeasurableElement(content: Node): MeasurableElement {
+export function createMeasurableElement(content: Node) {
     const element = document.createElement('div')
     const baselineBlock = document.createElement('div')
     const container = document.createElement('div')
@@ -23,6 +18,7 @@ export function createMeasurableElement(content: Node): MeasurableElement {
         container
     }
 }
+type MeasurableElement = ReturnType<typeof createMeasurableElement>
 export function measureElement(element: MeasurableElement, heightScale: number, widthScale: number) {
     const {height, top, width} = element.container.getBoundingClientRect()
     const scaledHeight = height * heightScale
