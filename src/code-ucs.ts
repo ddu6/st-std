@@ -62,30 +62,28 @@ export const code: UnitCompiler = async (unit, compiler) => {
     let text = compiler.base.unitToPlainString(unit)
     const element = textToPlainElement(text, forceBlock)
     let {lang} = unit.options
-    if (typeof lang !== 'string') {
-        lang = ''
-    }
-    if (lang.length === 0) {
-        return element
+    const {src} = unit.options
+    if (typeof lang !== 'string' && typeof src === 'string') {
+        const result = src.match(/\.([\w-]+)$/)
+        if (result !== null) {
+            lang = result[1]
+        }
     }
     ; (async () => {
-        const {src} = unit.options
         if (typeof src === 'string') {
-            try {
-                const res = await fetch(compiler.context.urlToAbsURL(src, unit))
-                if (res.ok) {
-                    const df = textToPlainDocumentFragment(text = await res.text(), forceBlock)
-                    element.innerHTML = ''
-                    element.append(df)
-                    element.dispatchEvent(new Event('adjust', {bubbles: true, composed: true}))
-                }
-            } catch (err) {
-                console.log(err)
+            const res = await fetch(compiler.context.urlToAbsURL(src, unit))
+            if (res.ok) {
+                const df = textToPlainDocumentFragment(text = await res.text(), forceBlock)
+                element.innerHTML = ''
+                element.append(df)
+                element.dispatchEvent(new Event('adjust', {bubbles: true, composed: true}))
             }
         }
-        const df = await (await getHighlighter(compiler)).highlightToDocumentFragment(text, lang, forceBlock)
-        element.innerHTML = ''
-        element.append(df)
+        if (typeof lang === 'string') {
+            const df = await (await getHighlighter(compiler)).highlightToDocumentFragment(text, lang, forceBlock)
+            element.innerHTML = ''
+            element.append(df)
+        }
     })().catch(console.log)
     return element
 }
