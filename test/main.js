@@ -6,10 +6,11 @@ const style = document.createElement('style')
 const struct = createASStruct()
 document.head.append(style)
 document.body.append(struct.element)
-const result = await compile(await (await fetch('./main.stdn')).text(), location.href, {
+const result = window.result = await compile([{
+    value: await (await fetch('./main.stdn')).text(),
+    url: location.href
+}], {
     builtInTagToUnitCompiler: tagToUnitCompiler,
     style
 })
-if (result !== undefined) {
-    struct.article.append(result.documentFragment)
-}
+struct.article.append(result.documentFragment)
