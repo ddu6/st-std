@@ -113,7 +113,7 @@
 
 /* theorem */
 .unit.theorem {
-    background-color: var(--color-pre);
+    background: var(--color-pre);
     border-left: var(--color-variable) solid 1px;
     margin: var(--length-gap) 0;
     padding: var(--length-gap);
