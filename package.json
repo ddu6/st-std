@@ -1,6 +1,6 @@
 {
   "name": "st-std",
-  "version": "0.28.3",
+  "version": "0.28.4",
   "description": "Standard css and unit compilers of stdn",
   "main": "dist/mod.js",
   "scripts": {
