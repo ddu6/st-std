@@ -1,5 +1,5 @@
-import {compileURLs} from 'https://cdn.jsdelivr.net/gh/st-org/stc@0.22.0/mod.js'
-import {createASStruct, init} from 'https://cdn.jsdelivr.net/gh/st-org/stui@0.15.5/mod.js'
+import {compileURLs} from 'https://cdn.jsdelivr.net/gh/st-org/stc@0.23.0/mod.js'
+import {createASStruct, init} from 'https://cdn.jsdelivr.net/gh/st-org/stui@0.15.6/mod.js'
 import * as tagToUnitCompiler from '../ucs.js'
 init()
 const stdStyle = document.createElement('style')
