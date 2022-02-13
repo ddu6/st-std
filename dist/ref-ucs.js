@@ -18,7 +18,7 @@ export const ref = async (unit, compiler) => {
     markEle.classList.add('mark');
     markEle.href = `#${encodeURIComponent(id)}`;
     descEle.classList.add('desc');
-    const globalTag = compiler.extractor.extractLastGlobalOption('tag', indexInfo.unit.tag, compiler.context.tagToGlobalOptions);
+    const globalTag = compiler.context.extractLastGlobalOption('tag', indexInfo.unit.tag);
     tagEle.textContent = prettyTag(typeof globalTag === 'string' ? globalTag : indexInfo.unit.tag);
     element.append(caption);
     caption.append(tagEle);

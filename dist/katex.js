@@ -38,7 +38,7 @@ export function gen(options = {}) {
         const suffixes = [];
         let customCommand = compilerToCustomCommand.get(compiler);
         if (customCommand === undefined) {
-            compilerToCustomCommand.set(compiler, customCommand = compiler.base.stdnToPlainString(compiler.extractor.extractGlobalChildren('katex', compiler.context.tagToGlobalOptions)));
+            compilerToCustomCommand.set(compiler, customCommand = compiler.base.stdnToPlainString(compiler.context.extractGlobalChildren('katex')));
         }
         if (customCommand.length > 0) {
             strings.push(`${customCommand}{}`);

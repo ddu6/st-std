@@ -20,7 +20,7 @@ export const proof: UnitCompiler = async (unit, compiler) => {
     tagEle.classList.add('tag')
     markEle.classList.add('mark')
     descEle.classList.add('desc')
-    const globalTag = compiler.extractor.extractLastGlobalOption('tag', unit.tag, compiler.context.tagToGlobalOptions)
+    const globalTag = compiler.context.extractLastGlobalOption('tag', unit.tag)
     tagEle.textContent = prettyTag(typeof globalTag === 'string' ? globalTag : unit.tag)
     element.append(caption)
     element.append(content)

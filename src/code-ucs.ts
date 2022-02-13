@@ -27,7 +27,7 @@ async function getHighlighter(compiler: Compiler): Promise<Highlighter> {
             'json',
             'markdown-basics',
         ]
-            .concat(compiler.extractor.extractGlobalStrings('vsce', 'code', compiler.context.tagToGlobalOptions))
+            .concat(compiler.context.extractGlobalStrings('vsce', 'code'))
             .map(value => `${value}/package.json`),
         'https://cdn.jsdelivr.net/gh/microsoft/vscode/extensions/'
     )
@@ -36,11 +36,11 @@ async function getHighlighter(compiler: Compiler): Promise<Highlighter> {
             'st-org/st-lang',
             'microsoft/vscode-typescript-next',
         ]
-            .concat(compiler.extractor.extractGlobalStrings('vsce-gh', 'code', compiler.context.tagToGlobalOptions))
+            .concat(compiler.context.extractGlobalStrings('vsce-gh', 'code'))
             .map(value => `${value}/package.json`),
         'https://cdn.jsdelivr.net/gh/'
     ))
-    langInfoArray.push(...await extractLangInfoArrayFromVSCEURLs(await compiler.extractor.extractGlobalURLs('vsce-src', 'code', compiler.context.tagToGlobalOptions), 'a:b'))
+    langInfoArray.push(...await extractLangInfoArrayFromVSCEURLs(await compiler.context.extractGlobalURLs('vsce-src', 'code'), 'a:b'))
     langInfoArray.push({
         name: 'markdown',
         alias: ['md']
@@ -52,7 +52,7 @@ async function getHighlighter(compiler: Compiler): Promise<Highlighter> {
         alias: ['ts']
     })
     const theme = extractThemeFromVSCT(vsct)
-    theme.push(...await extractThemeFromVSCTURLs(await compiler.extractor.extractGlobalURLs('vsct-src', 'code', compiler.context.tagToGlobalOptions), 'a:b'))
+    theme.push(...await extractThemeFromVSCTURLs(await compiler.context.extractGlobalURLs('vsct-src', 'code'), 'a:b'))
     compilerToHighlighter.set(compiler, highlighter = new Highlighter(langInfoArray, theme))
     target.dispatchEvent(new Event('loaded'))
     return highlighter
