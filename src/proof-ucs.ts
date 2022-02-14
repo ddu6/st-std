@@ -29,15 +29,15 @@ export const proof: UnitCompiler = async (unit, compiler) => {
     caption.append(descEle)
     content.append(await compiler.compileSTDN(unit.children))
     const {mark, desc} = unit.options
-    if (Array.isArray(mark)) {
-        markEle.append(await compiler.compileInlineSTDN(mark))
+    if (typeof mark === 'object') {
+        markEle.append(await compiler.compileUnit(mark))
     } else if (typeof mark === 'string') {
         markEle.textContent = mark
     } else if (typeof mark === 'number') {
         markEle.textContent = mark.toString()
     }
-    if (Array.isArray(desc)) {
-        descEle.append(await compiler.compileInlineSTDN(desc))
+    if (typeof desc === 'object') {
+        descEle.append(await compiler.compileUnit(desc))
     } else if (typeof desc === 'string') {
         descEle.textContent = desc
     } else if (typeof desc === 'number') {

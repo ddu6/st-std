@@ -29,8 +29,10 @@ export const ref = async (unit, compiler) => {
     }
     else {
         const { mark } = indexInfo.unit.options;
-        if (Array.isArray(mark)) {
-            markEle.append(replaceAnchors(await compiler.compileInlineSTDN(mark)));
+        if (typeof mark === 'object') {
+            const df = new DocumentFragment();
+            df.append(await compiler.compileUnit(mark));
+            markEle.append(replaceAnchors(df));
         }
         else if (typeof mark === 'string') {
             markEle.textContent = mark;
@@ -43,8 +45,8 @@ export const ref = async (unit, compiler) => {
         }
     }
     const { desc } = unit.options;
-    if (Array.isArray(desc)) {
-        descEle.append(await compiler.compileInlineSTDN(desc));
+    if (typeof desc === 'object') {
+        descEle.append(await compiler.compileUnit(desc));
     }
     else if (typeof desc === 'string') {
         descEle.textContent = desc;

@@ -1,4 +1,4 @@
-import type { UnitCompiler } from '@ddu6/stc';
+import type { Compiler, UnitCompiler } from '@ddu6/stc';
 export declare function createMeasurableElement(content: Node): {
     element: HTMLDivElement;
     baselineBlock: HTMLDivElement;
@@ -11,6 +11,7 @@ export declare function measureElement(element: MeasurableElement, heightScale: 
     top: number;
     bottom: number;
 };
+export declare const compilerToCustomCommand: Map<Compiler, string | undefined>;
 export declare function gen(options?: {
     noEnv?: true;
     addStar?: true;

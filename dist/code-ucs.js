@@ -1,7 +1,7 @@
 import { textToPlainDocumentFragment, textToPlainElement } from 'sthl/dist/base';
 import { getMod } from './import';
 import { vsct } from './vsct';
-const compilerToHighlighter = new Map();
+export const compilerToHighlighter = new Map();
 async function getHighlighter(compiler) {
     const { extractLangInfoArrayFromVSCEURLs, extractThemeFromVSCT, extractThemeFromVSCTURLs, Highlighter } = await getMod('sthl');
     let highlighter = compilerToHighlighter.get(compiler);

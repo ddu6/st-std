@@ -30,7 +30,7 @@ export function measureElement(element, heightScale, widthScale) {
         bottom: scaledHeight - scaledTop
     };
 }
-const compilerToCustomCommand = new Map();
+export const compilerToCustomCommand = new Map();
 export function gen(options = {}) {
     return async (unit, compiler) => {
         const element = document.createElement('span');

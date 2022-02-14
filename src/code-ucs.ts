@@ -3,7 +3,7 @@ import type {Highlighter} from 'sthl'
 import {textToPlainDocumentFragment, textToPlainElement} from 'sthl/dist/base'
 import {getMod} from './import'
 import {vsct} from './vsct'
-const compilerToHighlighter = new Map<Compiler, Highlighter | EventTarget | undefined>()
+export const compilerToHighlighter = new Map<Compiler, Highlighter | EventTarget | undefined>()
 async function getHighlighter(compiler: Compiler): Promise<Highlighter> {
     const {extractLangInfoArrayFromVSCEURLs, extractThemeFromVSCT, extractThemeFromVSCTURLs, Highlighter} = await getMod('sthl')
     let highlighter = compilerToHighlighter.get(compiler)
