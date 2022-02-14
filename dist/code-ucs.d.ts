@@ -1,4 +1,2 @@
-import type { Compiler, UnitCompiler } from '@ddu6/stc';
-import type { Highlighter } from 'sthl';
-export declare const compilerToHighlighter: Map<Compiler, EventTarget | Highlighter | undefined>;
+import type { UnitCompiler } from '@ddu6/stc';
 export declare const code: UnitCompiler;

@@ -32,7 +32,7 @@ export function measureElement(element: MeasurableElement, heightScale: number, 
         bottom: scaledHeight - scaledTop
     }
 }
-export const compilerToCustomCommand = new Map<Compiler, string | undefined>()
+const compilerToCustomCommand = new Map<Compiler, string | undefined>()
 export function gen(options: {
     noEnv?: true
     addStar?: true
