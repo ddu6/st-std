@@ -68,7 +68,7 @@ export function gen(options = {}) {
             element.classList.add('display');
         }
         async function renderStrings() {
-            element.innerHTML = ((await getMod('katex')).default.renderToString)(strings.join(''), {
+            element.innerHTML = (await getMod('katex')).default.renderToString(strings.join(''), {
                 displayMode,
                 errorColor: 'var(--color-warn)',
                 output: 'html',
