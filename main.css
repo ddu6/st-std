@@ -1,7 +1,3 @@
-/* 
-@import url(https://cdn.jsdelivr.net/gh/st-org/stui@0.15.12/main.css);
-@import url(https://cdn.jsdelivr.net/npm/katex@0.15.6/dist/katex.min.css);
-*/
 @import url(../stui@0.15.12/main.css);
 @import url(https://cdn.bootcdn.net/ajax/libs/KaTeX/0.15.6/katex.min.css);
 
