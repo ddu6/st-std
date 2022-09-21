@@ -1,4 +1,4 @@
-import {compileURLs} from 'https://cdn.jsdelivr.net/gh/st-org/stc@0.28.3/mod.js'
+import {compileURLs} from 'https://cdn.jsdelivr.net/gh/st-org/stc@0.28.4/mod.js'
 import {createASStruct, init} from 'https://cdn.jsdelivr.net/gh/st-org/stui@0.15.12/mod.js'
 import * as tagToUnitCompiler from '../ucs.js'
 init()
