@@ -5,6 +5,6 @@ export const {getMod} = createImporter<{
     katex: typeof katex
     sthl: typeof sthl
 }>({
-    katex: 'https://cdn.bootcdn.net/ajax/libs/KaTeX/0.15.6/katex.mjs',
+    katex: '../katex/0.0.1/mod.js',
     sthl: '../sthl@0.13.3/mod.js'
 })

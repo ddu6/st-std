@@ -1,5 +1,5 @@
 @import url(../stui@0.15.12/main.css);
-@import url(https://cdn.bootcdn.net/ajax/libs/KaTeX/0.15.6/katex.min.css);
+@import url(../katex@0.0.1/main.css);
 
 /* line */
 .st-line {
