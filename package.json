@@ -20,7 +20,7 @@
   },
   "dependencies": {
     "@ddu6/importer": "^0.0.3",
-    "sthl": "^0.31.8"
+    "sthl": "^0.31.9"
   },
   "engines": {
     "node": ">=14.0.0",
