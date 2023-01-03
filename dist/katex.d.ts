@@ -4,7 +4,7 @@ export declare function createMeasurableElement(content: Node): {
     baselineBlock: HTMLDivElement;
     container: HTMLDivElement;
 };
-declare type MeasurableElement = ReturnType<typeof createMeasurableElement>;
+type MeasurableElement = ReturnType<typeof createMeasurableElement>;
 export declare function measureElement(element: MeasurableElement, heightScale: number, widthScale: number): {
     height: number;
     width: number;

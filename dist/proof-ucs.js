@@ -1,12 +1,21 @@
+var __awaiter = (this && this.__awaiter) || function (thisArg, _arguments, P, generator) {
+    function adopt(value) { return value instanceof P ? value : new P(function (resolve) { resolve(value); }); }
+    return new (P || (P = Promise))(function (resolve, reject) {
+        function fulfilled(value) { try { step(generator.next(value)); } catch (e) { reject(e); } }
+        function rejected(value) { try { step(generator["throw"](value)); } catch (e) { reject(e); } }
+        function step(result) { result.done ? resolve(result.value) : adopt(result.value).then(fulfilled, rejected); }
+        step((generator = generator.apply(thisArg, _arguments || [])).next());
+    });
+};
 import { prettyTag } from './common';
-export const qed = async (unit, compiler) => {
-    return await compiler.compileUnit({
+export const qed = (unit, compiler) => __awaiter(void 0, void 0, void 0, function* () {
+    return yield compiler.compileUnit({
         tag: 'katex',
         options: { class: 'qed' },
         children: ['\\square'.split('')]
     });
-};
-export const proof = async (unit, compiler) => {
+});
+export const proof = (unit, compiler) => __awaiter(void 0, void 0, void 0, function* () {
     const element = document.createElement('div');
     const caption = document.createElement('span');
     const content = document.createElement('span');
@@ -26,10 +35,10 @@ export const proof = async (unit, compiler) => {
     caption.append(tagEle);
     caption.append(markEle);
     caption.append(descEle);
-    content.append(await compiler.compileSTDN(unit.children));
+    content.append(yield compiler.compileSTDN(unit.children));
     const { mark, desc } = unit.options;
     if (typeof mark === 'object') {
-        markEle.append(await compiler.compileUnit(mark));
+        markEle.append(yield compiler.compileUnit(mark));
     }
     else if (typeof mark === 'string') {
         markEle.textContent = mark;
@@ -38,7 +47,7 @@ export const proof = async (unit, compiler) => {
         markEle.textContent = mark.toString();
     }
     if (typeof desc === 'object') {
-        descEle.append(await compiler.compileUnit(desc));
+        descEle.append(yield compiler.compileUnit(desc));
     }
     else if (typeof desc === 'string') {
         descEle.textContent = desc;
@@ -46,7 +55,7 @@ export const proof = async (unit, compiler) => {
     else if (typeof desc === 'number') {
         descEle.textContent = desc.toString();
     }
-    const qedEle = await qed(unit, compiler);
+    const qedEle = yield qed(unit, compiler);
     if (content.children.length === 0) {
         const div = document.createElement('div');
         div.classList.add('st-line');
@@ -57,4 +66,4 @@ export const proof = async (unit, compiler) => {
         content.children[content.children.length - 1].append(qedEle);
     }
     return element;
-};
+});
