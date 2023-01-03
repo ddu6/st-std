@@ -6,5 +6,5 @@ export const {getMod} = createImporter<{
     sthl: typeof sthl
 }>({
     katex: 'https://cdn.jsdelivr.net/npm/katex@0.16.4/dist/katex.min.mjs',
-    sthl: 'https://cdn.jsdelivr.net/gh/st-org/sthl@0.13.3/mod.js'
+    sthl: 'https://cdn.jsdelivr.net/gh/st-org/sthl@0.31.8/mod.js'
 })
