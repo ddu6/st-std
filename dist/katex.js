@@ -1,3 +1,12 @@
+var __awaiter = (this && this.__awaiter) || function (thisArg, _arguments, P, generator) {
+    function adopt(value) { return value instanceof P ? value : new P(function (resolve) { resolve(value); }); }
+    return new (P || (P = Promise))(function (resolve, reject) {
+        function fulfilled(value) { try { step(generator.next(value)); } catch (e) { reject(e); } }
+        function rejected(value) { try { step(generator["throw"](value)); } catch (e) { reject(e); } }
+        function step(result) { result.done ? resolve(result.value) : adopt(result.value).then(fulfilled, rejected); }
+        step((generator = generator.apply(thisArg, _arguments || [])).next());
+    });
+};
 import { getMod } from './import';
 import { getScale } from './common';
 import { observeAdjustments } from './observe';
@@ -32,7 +41,7 @@ export function measureElement(element, heightScale, widthScale) {
 }
 const compilerToCustomCommand = new Map();
 export function gen(options = {}) {
-    return async (unit, compiler) => {
+    return (unit, compiler) => __awaiter(this, void 0, void 0, function* () {
         const element = document.createElement('span');
         const strings = [];
         const suffixes = [];
@@ -58,7 +67,7 @@ export function gen(options = {}) {
                 }
                 elementPositions.push(strings.length);
                 strings.push(`{\\htmlClass{unit-container}{\\htmlClass{tmpPlaceholder${elements.length}}{}}}`);
-                elements.push(createMeasurableElement(await compiler.compileUnit(inline)));
+                elements.push(createMeasurableElement(yield compiler.compileUnit(inline)));
             }
             strings.push('\n');
         }
@@ -67,26 +76,28 @@ export function gen(options = {}) {
         if (displayMode) {
             element.classList.add('display');
         }
-        async function renderStrings() {
-            element.innerHTML = (await getMod('katex')).default.renderToString(strings.join(''), {
-                displayMode,
-                errorColor: 'var(--color-warn)',
-                output: 'html',
-                strict: false,
-                throwOnError: false,
-                trust: true,
-            });
-            for (let i = 0; i < elements.length; i++) {
-                const tmp = element.querySelector(`.tmpPlaceholder${i}`);
-                if (tmp === null) {
-                    continue;
+        function renderStrings() {
+            return __awaiter(this, void 0, void 0, function* () {
+                element.innerHTML = (yield getMod('katex')).default.renderToString(strings.join(''), {
+                    displayMode,
+                    errorColor: 'var(--color-warn)',
+                    output: 'html',
+                    strict: false,
+                    throwOnError: false,
+                    trust: true,
+                });
+                for (let i = 0; i < elements.length; i++) {
+                    const tmp = element.querySelector(`.tmpPlaceholder${i}`);
+                    if (tmp === null) {
+                        continue;
+                    }
+                    tmp.replaceWith(elements[i].element);
                 }
-                tmp.replaceWith(elements[i].element);
-            }
+            });
         }
-        await renderStrings();
+        yield renderStrings();
         if (elements.length > 0) {
-            observeAdjustments(async () => {
+            observeAdjustments(() => __awaiter(this, void 0, void 0, function* () {
                 for (let i = 0; i < elements.length; i++) {
                     const element = elements[i];
                     const { heightScale, widthScale } = getScale(element.element);
@@ -96,10 +107,10 @@ export function gen(options = {}) {
                     const { top, bottom } = measureElement(element, heightScale, widthScale);
                     strings[elementPositions[i]] = `{\\raisebox{${top}em}{}\\raisebox{${-bottom}em}{}\\htmlClass{unit-container}{\\htmlClass{tmpPlaceholder${i}}{}}}`;
                 }
-                await renderStrings();
+                yield renderStrings();
                 return true;
-            }, element, compiler.context.root);
+            }), element, compiler.context.root);
         }
         return element;
-    };
+    });
 }

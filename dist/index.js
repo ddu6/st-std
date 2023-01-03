@@ -1,6 +1,16 @@
+var __awaiter = (this && this.__awaiter) || function (thisArg, _arguments, P, generator) {
+    function adopt(value) { return value instanceof P ? value : new P(function (resolve) { resolve(value); }); }
+    return new (P || (P = Promise))(function (resolve, reject) {
+        function fulfilled(value) { try { step(generator.next(value)); } catch (e) { reject(e); } }
+        function rejected(value) { try { step(generator["throw"](value)); } catch (e) { reject(e); } }
+        function step(result) { result.done ? resolve(result.value) : adopt(result.value).then(fulfilled, rejected); }
+        step((generator = generator.apply(thisArg, _arguments || [])).next());
+    });
+};
 import { prettyTag } from './common';
 export function gen(options = {}) {
-    return async (unit, compiler) => {
+    return (unit, compiler) => __awaiter(this, void 0, void 0, function* () {
+        var _a;
         const id = compiler.context.unitToId.get(unit);
         if (id === undefined) {
             return compiler.createErrorElement('Error');
@@ -22,14 +32,14 @@ export function gen(options = {}) {
         descEle.classList.add('desc');
         const globalTag = compiler.context.extractLastGlobalOption('tag', unit.tag);
         tagEle.textContent = prettyTag(typeof globalTag === 'string' ? globalTag : unit.tag);
-        const block = (unit.options.block ?? compiler.context.extractLastGlobalOption('block', unit.tag)) === true;
+        const block = ((_a = unit.options.block) !== null && _a !== void 0 ? _a : compiler.context.extractLastGlobalOption('block', unit.tag)) === true;
         if (block || !options.inline) {
             element = document.createElement('div');
-            content.append(await compiler.compileSTDN(unit.children));
+            content.append(yield compiler.compileSTDN(unit.children));
         }
         else {
             element = document.createElement('span');
-            content.append(await compiler.compileInlineSTDN(unit.children));
+            content.append(yield compiler.compileInlineSTDN(unit.children));
         }
         if (block || !options.noCapitalize) {
             element.classList.add('capitalize-tag');
@@ -50,7 +60,7 @@ export function gen(options = {}) {
         caption.append(descEle);
         const { mark, desc } = unit.options;
         if (typeof mark === 'object') {
-            markEle.append(await compiler.compileUnit(mark));
+            markEle.append(yield compiler.compileUnit(mark));
         }
         else if (typeof mark === 'string') {
             markEle.textContent = mark;
@@ -62,7 +72,7 @@ export function gen(options = {}) {
             markEle.textContent = indexInfo.index.join('.');
         }
         if (typeof desc === 'object') {
-            descEle.append(await compiler.compileUnit(desc));
+            descEle.append(yield compiler.compileUnit(desc));
         }
         else if (typeof desc === 'string') {
             descEle.textContent = desc;
@@ -77,5 +87,5 @@ export function gen(options = {}) {
             }
         }
         return element;
-    };
+    });
 }

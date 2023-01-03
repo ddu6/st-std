@@ -1,5 +1,14 @@
+var __awaiter = (this && this.__awaiter) || function (thisArg, _arguments, P, generator) {
+    function adopt(value) { return value instanceof P ? value : new P(function (resolve) { resolve(value); }); }
+    return new (P || (P = Promise))(function (resolve, reject) {
+        function fulfilled(value) { try { step(generator.next(value)); } catch (e) { reject(e); } }
+        function rejected(value) { try { step(generator["throw"](value)); } catch (e) { reject(e); } }
+        function step(result) { result.done ? resolve(result.value) : adopt(result.value).then(fulfilled, rejected); }
+        step((generator = generator.apply(thisArg, _arguments || [])).next());
+    });
+};
 import { prettyTag, replaceAnchors } from './common';
-export const ref = async (unit, compiler) => {
+export const ref = (unit, compiler) => __awaiter(void 0, void 0, void 0, function* () {
     const id = unit.options['ref-id'];
     if (typeof id !== 'string' || id.length === 0) {
         return compiler.createErrorElement('Ref id required');
@@ -25,13 +34,13 @@ export const ref = async (unit, compiler) => {
     caption.append(markEle);
     caption.append(descEle);
     if (unit.children.length > 0) {
-        markEle.append(replaceAnchors(await compiler.compileInlineSTDN(unit.children)));
+        markEle.append(replaceAnchors(yield compiler.compileInlineSTDN(unit.children)));
     }
     else {
         const { mark } = indexInfo.unit.options;
         if (typeof mark === 'object') {
             const df = new DocumentFragment();
-            df.append(await compiler.compileUnit(mark));
+            df.append(yield compiler.compileUnit(mark));
             markEle.append(replaceAnchors(df));
         }
         else if (typeof mark === 'string') {
@@ -46,7 +55,7 @@ export const ref = async (unit, compiler) => {
     }
     const { desc } = unit.options;
     if (typeof desc === 'object') {
-        descEle.append(await compiler.compileUnit(desc));
+        descEle.append(yield compiler.compileUnit(desc));
     }
     else if (typeof desc === 'string') {
         descEle.textContent = desc;
@@ -55,4 +64,4 @@ export const ref = async (unit, compiler) => {
         descEle.textContent = desc.toString();
     }
     return element;
-};
+});
